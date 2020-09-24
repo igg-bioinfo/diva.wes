@@ -59,8 +59,7 @@ def Convert_VCF_file_to_TAB_user_Kantale(
         printFormat = False,
         functionsToApplyToFields=None,
         subtituteHeaderNames=None,
-        verbose=False,
-        removeHash=False
+        verbose=False
         ):
     """ """
     #return dictionay with various statistics. To be extended..
@@ -107,11 +106,10 @@ def Convert_VCF_file_to_TAB_user_Kantale(
             print("Done finding info and sample fields")
         infoFields = list(infoFields)
         infoFields.sort()
-        # Reorder fields
-        to_the_end = ['AC', 'MQ', 'QD', 'DP', 'FS', 'SOR', 'ExcessHet', 'VQSLOD', 'culprit', 'Cases', 'Controls']
+        # Move fields to the end
+        to_the_end = ['AC', 'MQ', 'QD', 'DP']
         for value in to_the_end:
-            if value in infoFields:
-                infoFields.append(infoFields.pop(infoFields.index(value)))
+            infoFields.append(infoFields.pop(infoFields.index(value)))
         sampleFields = list(sampleFields)
         inputFile.close()
         inputFile = open(inputFilename)
@@ -269,8 +267,6 @@ def Convert_VCF_file_to_TAB_user_Kantale(
             ret["header"] = headerToPrint
             if printHeader:
                 headerToPrintStr = str.join('\t', headerToPrint)
-                if removeHash:
-                    headerToPrintStr = headerToPrintStr[1:]
                 if outputFilename:
                     outputFile.write(headerToPrintStr + "\n")
                 else:
@@ -331,9 +327,8 @@ def __main__():
     parser.add_option('--do-not-split-sample', dest='split_sample',  action='store_false', default=True, help='Do not expand SAMPLE field')
     parser.add_option('--print-format', dest='print_format',  action='store_true', default=False, help='Print FORMAT field')
     parser.add_option('--functions', dest='functions', default=None, help='Functions to apply to fields:\t\t\t\t # We want to export a ANNOVAR compatible file\t\t\t\t{"POS": lambda x:x + \'\\t\' + x}')
-    parser.add_option('--new-header', dest='new_header', default=None, help='Substitute header names. Provide pairs of field names separated by space. Can be repeated multiple times', nargs=2, action='append')
+    parser.add_option('--new-header', dest='new_header', default=None, help='Substitute header names')
     parser.add_option('--quiet', dest='verbose', action='store_false', default=True, help='Quiet')
-    parser.add_option('--keep-hash-in-header', dest='remove_hash', action='store_false', default=True, help='Do not print # before CHROM')
     (options, args) = parser.parse_args()
     if len(args) != 2:
         parser.error('Wrong number of arguments')
@@ -347,8 +342,7 @@ def __main__():
         printFormat = options.print_format,
         functionsToApplyToFields=options.functions,
         subtituteHeaderNames=options.new_header,
-        verbose=options.verbose,
-        removeHash=options.remove_hash
+        verbose=options.verbose
     )
     if returned:
         print('Method returned:')

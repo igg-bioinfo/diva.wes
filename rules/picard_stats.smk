@@ -6,21 +6,21 @@ rule picard_pre_HsMetrics:
    input:
        bam="reads/recalibrated/{sample}.dedup.recal.bam"
    output:
-       probes=temp("references/{sample}_probes_header"),
+       hsProbes=temp("references/{sample}_hsProbes_header"),
        hsTarget=temp("references/{sample}_hsTarget_header")
    conda:
        "../envs/samtools.yaml"
    params:
-        probes = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("probes")),
-        hsTarget = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("hsTarget")),
+       hsProbes = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("hsProbes")),
+       hsTarget = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_default"])).get("hsTarget")),
    shell:
-       "samtools view -H  {input.bam} | cat - {params.probes} > {output.probes}; "
+       "samtools view -H  {input.bam} | cat - {params.hsProbes} > {output.hsProbes}; "
        "samtools view -H  {input.bam} | cat - {params.hsTarget} > {output.hsTarget}"
 
 rule picard_HsMetrics:
    input:
        bam="reads/recalibrated/{sample}.dedup.recal.bam",
-       probes="references/{sample}_probes_header",
+       hsProbes="references/{sample}_hsProbes_header",
        hsTarget="references/{sample}_hsTarget_header"
    output:
        "reads/recalibrated/{sample}.dedup.recal.hs.txt"
@@ -33,7 +33,7 @@ rule picard_HsMetrics:
    shell:
        "picard {params.custom} CollectHsMetrics "
        "INPUT={input.bam} OUTPUT={output} "
-       "BAIT_INTERVALS={input.probes} TARGET_INTERVALS={input.hsTarget} "
+       "BAIT_INTERVALS={input.hsProbes} TARGET_INTERVALS={input.hsTarget} "
        "CLIP_OVERLAPPING_READS=false MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 "
 
 
@@ -72,21 +72,21 @@ rule picard_pre_HsCCDS_Metrics:
    input:
        bam="reads/recalibrated/{sample}.ccds.dedup.recal.bam"
    output:
-       probes=temp("references/{sample}.ccds_probes_header"),
+       hsProbes=temp("references/{sample}.ccds_hsProbes_header"),
        hsTarget=temp("references/{sample}.ccds_hsTarget_header")
    conda:
        "../envs/samtools.yaml"
    params:
-        probes = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_ccds"])).get("probes")),
+        hsProbes = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_ccds"])).get("hsProbes")),
         hsTarget = lambda wildcards: resolve_single_filepath(*references_abs_path(), config.get("intervals").get(config.get("samples_intervals").get(wildcards.sample, config["intervals_ccds"])).get("hsTarget")),
    shell:
-       "samtools view -H  {input.bam} | cat - {params.probes} > {output.probes}; "
+       "samtools view -H  {input.bam} | cat - {params.hsProbes} > {output.hsProbes}; "
        "samtools view -H  {input.bam} | cat - {params.hsTarget} > {output.hsTarget}"
 
 rule picard_HsCCDS_Metrics:
    input:
        bam="reads/recalibrated/{sample}.ccds.dedup.recal.bam",
-       probes="references/{sample}.ccds_probes_header",
+       hsProbes="references/{sample}.ccds_hsProbes_header",
        hsTarget="references/{sample}.ccds_hsTarget_header"
    output:
        "reads/recalibrated/{sample}.ccds.dedup.recal.hs.txt"
@@ -99,7 +99,7 @@ rule picard_HsCCDS_Metrics:
    shell:
        "picard {params.custom} CollectHsMetrics "
        "INPUT={input.bam} OUTPUT={output} "
-       "BAIT_INTERVALS={input.probes} TARGET_INTERVALS={input.hsTarget} "
+       "BAIT_INTERVALS={input.hsProbes} TARGET_INTERVALS={input.hsTarget} "
        "CLIP_OVERLAPPING_READS=false MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 "
 
 

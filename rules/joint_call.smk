@@ -12,7 +12,7 @@ rule gatk_GenomicsDBImport:
         intervals = resolve_single_filepath(*references_abs_path(),config.get("intervals").get(config.get("intervals_default")).get("bedTarget")),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         gvcfs=_multi_flag_dbi("-V", expand("variant_calling/{sample.sample}.g.vcf.gz", sample=samples.reset_index().itertuples())),
-        db=config.get("db_suffix")
+        db=config.get("rules").get("gatk_GenomicsDBImport").get("db_suffix")
     log:
         "logs/gatk/GenomicsDBImport/genomicsdbi.info.log"
     benchmark:
@@ -39,7 +39,7 @@ rule gatk_GenotypeGVCFs:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=2),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         dbsnp=resolve_single_filepath(*references_abs_path(), config.get("known_variants").get("dbsnp")),
-        db=config.get("db_suffix")
+        db=config.get("rules").get("gatk_GenomicsDBImport").get("db_suffix")
     log:
         "logs/gatk/GenotypeGVCFs/all.info.log"
     benchmark:

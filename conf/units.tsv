@@ -1,0 +1,4 @@
+sample	unit	fq1	fq2
+18-S-0895	FLOWCELL.L001.18-S-0895	/mnt/datasets/test/18-S-0895_S21_R1_001.fastq.gz	/mnt/datasets/test/18-S-0895_S21_R2_001.fastq.gz
+18-S-0923	FLOWCELL.L001.18-S-0923	/mnt/datasets/test/18-S-0923_S23_R1_001.fastq.gz	/mnt/datasets/test/18-S-0923_S23_R2_001.fastq.gz
+18-S-0924	FLOWCELL.L001.18-S-0924	/mnt/datasets/test/18-S-0924_S22_R1_001.fastq.gz	/mnt/datasets/test/18-S-0924_S22_R2_001.fastq.gz

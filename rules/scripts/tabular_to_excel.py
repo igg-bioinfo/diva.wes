@@ -4,6 +4,7 @@ import sys
 import os
 import logging
 import argparse
+import xlsxwriter
 
 from pandas import read_csv
 
@@ -61,7 +62,7 @@ def make_parser():
                         help="delimiter in input file)")
 
     parser.add_argument('--engine', '-e', metavar="STRING",
-                        choices=['openpyxl', 'xlsxwrite'], default="openpyxl",
+                        choices=['openpyxl', 'xlsxwriter'], default="openpyxl",
                         help="write engine to use, ‘openpyxl’ or  ‘xlsxwriter’")
 
     return parser

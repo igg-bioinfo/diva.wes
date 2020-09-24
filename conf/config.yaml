@@ -1,0 +1,120 @@
+samples: ../conf/samples.tsv
+units: ../conf/units.tsv
+sets: ../conf/sets.tsv
+reheader: ../conf/reheader.tsv
+internal_sid: "LIMS"
+
+references:
+    basepath: "/mnt/references"
+    provider: "gatk"
+    release: "hg38"
+
+genome_fasta: "Homo_sapiens_assembly38.fasta"
+
+known_variants:
+    dbsnp: "Homo_sapiens_assembly38.dbsnp138.vcf"
+    hapmap: "hapmap_3.3.hg38.vcf.gz"
+    g1k: "1000G_phase1.snps.high_confidence.hg38.vcf.gz"
+    omni: "1000G_omni2.5.hg38.vcf.gz"
+    mills: "Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
+    #ph1_indels: "known_variants/1000G_phase1.indels.hg19.sites.vcf"
+    ph1_indels: "Homo_sapiens_assembly38.known_indels.vcf.gz"
+
+
+intervals:
+    AgilentSureSelectHumanAllExonV7:
+        bedTarget: "intervals/AgilentSureSelectHumanAllExonV7_S31285117_Regions.hg38.bed"
+        hsProbes: "intervals/AgilentSureSelectHumanAllExonV7_S31285117_MergedProbes.hg38.HybridSelection"
+        hsTarget: "intervals/AgilentSureSelectHumanAllExonV7_S31285117_Regions.hg38.HybridSelection"
+
+    IDT_xGen_ExomeResearchPanel_v1:
+        bedTarget: "intervals/xgen-exome-research-panel-v1-targets-hg38.bed"
+        hsProbes: "intervals/xgen-exome-research-panel-v1-probes-hg38.HybridSelection"
+        hsTarget: "intervals/xgen-exome-research-panel-v1-targets-hg38.HybridSelection"
+
+    IDT_xGen_ExomeResearchPanel_v2:
+        bedTarget: "intervals/xgen-exome-research-panel-v2-targets-hg38.bed"
+        hsProbes: "intervals/xgen-exome-research-panel-v2-probes-hg38.HybridSelection"
+        hsTarget: "intervals/xgen-exome-research-panel-v2-targets-hg38.HybridSelection"
+
+    ccds:
+        bedTarget: "intervals/ccds_hg38_Target.bed"
+        hsProbes: "intervals/ccds_hg38_Probes.HybridSelection"
+        hsTarget: "intervals/ccds_hg38_Target.HybridSelection"
+
+
+intervals_default: "IDT_xGen_ExomeResearchPanel_v2"
+samples_intervals:
+    DNA16-0389-R0001: "_enrichment_kit_"
+intervals_ccds: "ccds"
+interval_target_list: "BED FILE WITH TARGET POSITIONS FOR COVERAGE CHECK"
+tmp_dir: "/mnt/tmp"
+
+rules:
+    bwa-mem:
+        arguments: "-M"
+        platform: "illumina"
+    multiqc:
+        arguments: "--force --cl_config 'picard_config: { general_stats_target_coverage: [10,20,30] }' --interactive --cl_config 'max_table_rows: 700'"
+    trim_galore_pe:
+        arguments: "--paired -q 20"
+    trim_galore_se:
+        arguments: "-q 20"
+    picard_MarkDuplicates:
+        arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
+    picard_WGSMetrics:
+        arguments: "MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 READ_LENGTH=150 COUNT_UNPAIRED=true"
+    picard_gc:
+        params: ""
+    gatk_BQSR:
+        known_sites:
+            - dbsnp
+            - mills
+            - ph1_indel
+    gatk_GenomicsDBImport:
+        db_suffix: "db_gatk"
+    gatk_SelectVariants:
+        samples_files:
+            setA: "project_path/set_A.args"
+        arguments: [
+                   ["--exclude-filtered", ""],
+                   ["--exclude-non-variants", ""]
+                   #["-se", "DNA16-038*"],
+                   #["-sn", "DNA16-0284-R0001"]
+                   ]
+    annovar:
+        program: "perl /mnt/references/annovar/table_annovar.pl"
+        db: "/mnt/references/annovar/humandb/hg38"
+        build: "hg38"
+        arguments: "-remove -protocol intervar_20180118,gene4denovo201907 -operation f,f -nastring . -vcfinput -polish"
+
+    vep:
+        arguments: [
+                  ##["--plugin", "G2P,file=/mnt/references/vep/plugins/g2p/DDG2P.csv"],
+                   ["--plugin", "dbNSFP,/mnt/references/vep/plugins/dbnsfp/dbNSFP4.1a.gz,SIFT_pred,SIFT4G_pred,Polyphen2_HDIV_pred,Polyphen2_HVAR_pred,LRT_pred,MutationTaster_pred,MutationAssessor_pred,FATHMM_pred,PROVEAN_pred,MetaSVM_pred,MetaLR_pred,Reliability_index,M-CAP_pred,DEOGEN2_pred,BayesDel_addAF_pred,ClinPred_pred,Aloft_pred,Aloft_Confidence,CADD_phred,DANN_score,fathmm-MKL_coding_pred,fathmm-XF_coding_pred,Eigen-phred_coding,GenoCanyon_score,GERP++_RS,1000Gp3_AF,gnomAD_exomes_AC,gnomAD_exomes_AN,gnomAD_exomes_AF,gnomAD_exomes_nhomalt,gnomAD_exomes_NFE_AC,gnomAD_exomes_NFE_AN,gnomAD_exomes_NFE_AF,gnomAD_exomes_NFE_nhomalt,gnomAD_exomes_POPMAX_AC,gnomAD_exomes_POPMAX_AN,gnomAD_exomes_POPMAX_AF,gnomAD_exomes_POPMAX_nhomalt,gnomAD_exomes_controls_AC,gnomAD_exomes_controls_AN,gnomAD_exomes_controls_AF,gnomAD_exomes_controls_nhomalt,gnomAD_genomes_AC,gnomAD_genomes_AN,gnomAD_genomes_AF,gnomAD_genomes_nhomalt,gnomAD_genomes_NFE_AC,gnomAD_genomes_NFE_AN,gnomAD_genomes_NFE_AF,gnomAD_genomes_NFE_nhomalt,clinvar_clnsig,clinvar_trait,clinvar_review,clinvar_MedGen_id,clinvar_OMIM_id,clinvar_Orphanet_id,Interpro_domain,GTEx_V8_gene,GTEx_V8_tissue,Geuvadis_eQTL_target_gene"],
+                   ["--plugin", "dbscSNV,/mnt/references/vep/plugins/dbscSNV/dbscSNV1.1_GRCh38.txt.gz"],
+                   ["--plugin", "SpliceAI,snv=/mnt/references/vep/plugins/spliceai/spliceai_scores.raw.snv.hg38.vcf.gz,indel=/mnt/references/vep/plugins/spliceai/spliceai_scores.raw.indel.hg38.vcf.gz"],
+                   ["--plugin", "CADD,/mnt/references/vep/plugins/cadd_1.6_hg38/whole_genome_SNVs.tsv.gz,/mnt/references/vep/plugins/cadd_1.6_hg38/gnomad.genomes.r3.0.indel.tsv.gz"],
+                   ["--plugin", "DisGeNET,file=/mnt/references/vep/plugins/disgenet/all_variant_disease_pmid_associations_final.tsv.gz,disease=1"],
+                   ["--custom", "/mnt/references/vep/plugins/gnomad3.0/gnomad.genomes.r3.0.sites.trimmed_info.vcf.gz,gnomADg,vcf,exact,0,AF,AF_afr,AF_amr,AF_asj,AF_eas,AF_fin,AF_nfe,AF_oth"],
+                   ["--sift p --polyphen p --gene_phenotype --regulatory", ""],
+                   ["--uniprot --ccds --symbol --protein --tsl --canonical --mane --domains --biotype", ""],
+                   ["--check_existing --clin_sig_allele 1 --max_af --af_gnomad --pubmed --variant_class ", ""],
+                   ["--plugin",  "gnomADpLI,/mnt/references/vep/plugins/gnomad_pli/gnomad.v2.1.1.lof_metrics.by_gene.clean.txt"],
+                   ]
+        cache_dir: "/mnt/references/vep"
+        species: "homo_sapiens"
+        assembly: "GRCh38"
+    snpSift_caseControl:
+        ped: "/mnt/projects/wes_test/conf/samples.ped"
+    filter_vep:
+        arguments: [
+                   ["--filter", "'MAX_AF < 0.01 or not MAX_AF'"],
+                   #["--filter", ""],
+                   ]
+    bcftools_remove:
+        fields_to_remove: "INFO/CSQ,INFO/AF,INFO/AN,INFO/BaseQRankSum,INFO/CC_ALL,INFO/CC_DOM,INFO/CC_GENO,INFO/CC_REC,INFO/CC_TREND,INFO/DB,INFO/InbreedingCoeff,INFO/MQRankSum,INFO/NEGATIVE_TRAIN_SITE,INFO/POSITIVE_TRAIN_SITE,INFO/ReadPosRankSum,INFO/AC"
+    vep_to_tsv:
+        fields: "Allele Consequence IMPACT SYMBOL Gene Feature_type Feature BIOTYPE EXON INTRON HGVSc HGVSp cDNA_position CDS_position Protein_position Amino_acids Codons Existing_variation DISTANCE STRAND FLAGS VARIANT_CLASS SYMBOL_SOURCE HGNC_ID CANONICAL MANE TSL CCDS ENSP SWISSPROT TREMBL UNIPARC SOURCE GENE_PHENO SIFT PolyPhen DOMAINS gnomAD_AF gnomAD_AFR_AF gnomAD_AMR_AF gnomAD_ASJ_AF gnomAD_EAS_AF gnomAD_FIN_AF gnomAD_NFE_AF gnomAD_OTH_AF gnomAD_SAS_AF MAX_AF MAX_AF_POPS CLIN_SIG SOMATIC PHENO PUBMED MOTIF_NAME MOTIF_POS HIGH_INF_POS MOTIF_SCORE_CHANGE 1000Gp3_AF Aloft_Confidence Aloft_pred BayesDel_addAF_pred CADD_phred ClinPred_pred DANN_score DEOGEN2_pred Eigen-phred_coding FATHMM_pred GERP++_RS GTEx_V8_gene GTEx_V8_tissue GenoCanyon_score Geuvadis_eQTL_target_gene Interpro_domain LRT_pred M-CAP_pred MetaLR_pred MetaSVM_pred MutationAssessor_pred MutationTaster_pred PROVEAN_pred Polyphen2_HDIV_pred Polyphen2_HVAR_pred Reliability_index SIFT4G_pred SIFT_pred clinvar_MedGen_id clinvar_OMIM_id clinvar_Orphanet_id clinvar_clnsig clinvar_review clinvar_trait fathmm-MKL_coding_pred fathmm-XF_coding_pred gnomAD_exomes_AC gnomAD_exomes_AF gnomAD_exomes_AN gnomAD_exomes_NFE_AC gnomAD_exomes_NFE_AF gnomAD_exomes_NFE_AN gnomAD_exomes_NFE_nhomalt gnomAD_exomes_POPMAX_AC gnomAD_exomes_POPMAX_AF gnomAD_exomes_POPMAX_AN gnomAD_exomes_POPMAX_nhomalt gnomAD_exomes_controls_AC gnomAD_exomes_controls_AF gnomAD_exomes_controls_AN gnomAD_exomes_controls_nhomalt gnomAD_exomes_nhomalt gnomAD_genomes_AC gnomAD_genomes_AF gnomAD_genomes_AN gnomAD_genomes_NFE_AC gnomAD_genomes_NFE_AF gnomAD_genomes_NFE_AN gnomAD_genomes_NFE_nhomalt gnomAD_genomes_nhomalt ada_score rf_score SpliceAI_pred_DP_AG SpliceAI_pred_DP_AL SpliceAI_pred_DP_DG SpliceAI_pred_DP_DL SpliceAI_pred_DS_AG SpliceAI_pred_DS_AL SpliceAI_pred_DS_DG SpliceAI_pred_DS_DL SpliceAI_pred_SYMBOL CADD_PHRED CADD_RAW DisGeNET_PMID DisGeNET_SCORE DisGeNET_disease gnomADlof_z gnomADmis_z gnomADoe_lof gnomADoe_lof_upper gnomADoe_mis gnomADoe_mis_upper gnomADoe_syn gnomADoe_syn_upper gnomADpLI gnomADsyn_z gnomADg gnomADg_AF gnomADg_AF_afr gnomADg_AF_amr gnomADg_AF_asj gnomADg_AF_eas gnomADg_AF_fin gnomADg_AF_nfe gnomADg_AF_oth"
+    bedtools_coverage:
+        params: ''

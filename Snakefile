@@ -27,16 +27,18 @@ rule all:
 #        expand("reads/recalibrated/{sample.sample}.dedup.recal.bam", sample=samples.reset_index().itertuples()),
 #        expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
 #        expand("reads/recalibrated/{sample.sample}.ccds.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
-        "qc/multiqc.html",
-        "qc/kinship/multiqc_heatmap.html",
+#        "qc/multiqc.html",
+#        "qc/kinship/multiqc_heatmap.html",
 #        "qc/bedtools/heatmap_enriched_regions.png",
 #        expand("variant_calling/{sample.sample}.g.vcf.gz",sample=samples.reset_index().itertuples()),
 #        "db/imports/check",
 #        "variant_calling/all.vcf.gz",
+#        "variant_calling/mtDNA.vcf",
 #        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz",
-        expand("annotation/{set.set}/bcftools/selected.annot.lightened.reheaded.xlsx", set=sets.reset_index().itertuples()),
-        expand("annotation/{set.set}/kggseq/doubleHits.doublehit.gene.trios.flt.gty.xlsx", set=sets.reset_index().itertuples()),
-         "delivery.completed"
+#        expand("annotation/{set.set}/annovar/annovar.hg38_multianno.vcf", set=sets.reset_index().itertuples()),
+        expand("annotation/{set.set}/vep/vep.vcf", set=sets.reset_index().itertuples()),
+        expand("annotation/{set.set}/vep/vep.snpsift.filt.clean.merged.xlsx", set=sets.reset_index().itertuples()),
+#        expand("annotation/{set.set}/vep/vep.tsv", set=sets.reset_index().itertuples()),
 
 
 
@@ -55,7 +57,7 @@ include:
 include:
     dima_path + include_prefix + "/bsqr.smk"
 include:
-       include_prefix + "/picard_stats.smk"
+    include_prefix + "/picard_stats.smk"
 include:
     include_prefix + "/call_variants.smk"
 include:
@@ -67,10 +69,9 @@ include:
 include:
     include_prefix + "/annotation.smk"
 include:
-    include_prefix + "/format_output.smk"
-include:
     include_prefix + "/identity_check.smk"
 include:
     include_prefix + "/coverage.smk"
 include:
-    include_prefix + "/delivery.smk"
+    include_prefix + "/mtdna.smk"
+

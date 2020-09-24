@@ -35,7 +35,7 @@ rule gatk_VariantRecalibrator:
         custom=java_params(tmp_dir=config.get("tmp_dir"),multiply_by=2),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta"))
     log:
-        "variant_calling/log/{prefix}.{type}_recalibrate_info.log"
+        "logs/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate_info.log"
     conda:
         "../envs/gatk.yaml"
     benchmark:
