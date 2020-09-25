@@ -107,6 +107,8 @@ rules:
         assembly: "GRCh38"
     snpSift_caseControl:
         ped: "/mnt/projects/wes_test/conf/samples.ped"
+    vcf_to_tabular:
+        params: "--do-not-split-samples"
     filter_vep:
         arguments: [
                    ["--filter", "'MAX_AF < 0.01 or not MAX_AF'"],

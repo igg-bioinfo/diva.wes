@@ -137,12 +137,11 @@ rule vcf_to_tabular:
        'annotation/{set}/vep/{set}.vep.snpsift.filt.clean.tsv'
     params:
        script='../rules/scripts/vcf_to_tabular_futurized.py',
-       params= "--do-not-split-sample --print-format "
-
+       params=config.get("rules").get("vcf_to_tabular").get("params")
     conda:
         "../envs/future.yaml"
     shell:
-        "python {params.script} {params.params} {input} {output}"
+        "python {params.script} {params.params} --print-format {input} {output}"
 
 # Merge filtered VCF and VEP annotations
 rule vep_to_tsv:
