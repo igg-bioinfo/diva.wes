@@ -37,10 +37,10 @@ rule all:
 #        "variant_calling/all.vcf.gz",
 #        "variant_calling/mtDNA.vcf",
 #        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz",
-#        expand("annotation/{set.set}/annovar/annovar.hg38_multianno.vcf", set=sets.reset_index().itertuples()),
-        expand("annotation/{set.set}/vep/vep.vcf", set=sets.reset_index().itertuples()),
-        expand("annotation/{set.set}/vep/vep.snpsift.filt.clean.merged.xlsx", set=sets.reset_index().itertuples()),
-#        expand("annotation/{set.set}/vep/vep.tsv", set=sets.reset_index().itertuples()),
+#        expand("annotation/{set.set}/annovar/{set.set}.annovar.hg38_multianno.vcf", set=sets.reset_index().itertuples()),
+        expand("annotation/{set.set}/vep/{set.set}.vep.vcf", set=sets.reset_index().itertuples()),
+        expand("annotation/{set.set}/vep/{set.set}.vep.snpsift.filt.clean.merged.xlsx", set=sets.reset_index().itertuples()),
+#        expand("annotation/{set.set}/vep/{set.set}.vep.tsv", set=sets.reset_index().itertuples()),
 
 
 
