@@ -29,6 +29,7 @@ rule all:
 #        expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
 #        expand("reads/recalibrated/{sample.sample}.ccds.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
 #        "qc/multiqc.html",
+#next line check relationship between samples
 #        "qc/kinship/multiqc_heatmap.html",
 #        "qc/bedtools/heatmap_enriched_regions.png",
 #        expand("variant_calling/{sample.sample}.g.vcf.gz",sample=samples.reset_index().itertuples()),
