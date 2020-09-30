@@ -40,8 +40,7 @@ rule all:
 #        expand("annotation/{set.set}/annovar/{set.set}.annovar.hg38_multianno.vcf", set=sets.reset_index().itertuples()),
         expand("annotation/{set.set}/vep/{set.set}.vep.vcf", set=sets.reset_index().itertuples()),
         expand("annotation/{set.set}/vep/{set.set}.vep.snpsift.filt.clean.merged.xlsx", set=sets.reset_index().itertuples()),
-#        expand("annotation/{set.set}/vep/{set.set}.vep.tsv", set=sets.reset_index().itertuples()),
-
+#        expand("annotation/{set.set}/vep/{set.set}.vep.snpsift.filt.clean.merged.tsv", set=sets.reset_index().itertuples()),
 
 
 
