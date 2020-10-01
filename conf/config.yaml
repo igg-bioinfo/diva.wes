@@ -57,9 +57,9 @@ rules:
     multiqc:
         arguments: "--force --cl_config 'picard_config: { general_stats_target_coverage: [10,20,30] }' --interactive --cl_config 'max_table_rows: 700'"
     trim_galore_pe:
-        arguments: "--paired -q 20"
+        arguments: "--paired -q 20 --cores 4 --fastqc --fastqc_args '--outdir qc/fastqc --paired"
     trim_galore_se:
-        arguments: "-q 20"
+        arguments: "--paired -q 20 --cores 4 --fastqc --fastqc_args '--outdir qc/fastqc"
     picard_MarkDuplicates:
         arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
     picard_WGSMetrics:
