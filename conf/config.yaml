@@ -108,7 +108,7 @@ rules:
     snpSift_caseControl:
         ped: "/mnt/projects/wes_test/conf/samples.ped"
     vcf_to_tabular:
-        params: "--do-not-split-samples"
+        params: "--do-not-split-sample"
     filter_vep:
         arguments: [
                    ["--filter", "'MAX_AF < 0.01 or not MAX_AF'"],
