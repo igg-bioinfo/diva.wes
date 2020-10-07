@@ -141,5 +141,17 @@ def get_sample_by_set(wildcards, sets, label='sample'):
         sample_args=''
         for x in sample_set.split(','):
             sample_args= sample_args+' -sn '+x
-        #print(sample_args)
         return str(sample_args)
+
+def g2p_command(wildcards, ped, param):
+    """
+    Return the string for G2P VEP plugins
+    This plugin is executed for families
+    including ONLY ONE affected sample
+    """
+    if param is None:
+        return ''
+    affected_samples = ped.loc[(ped['affected'] == '2') & (ped['set'] == wildcards.set), 'sample'].tolist()
+    if len(affected_samples) == 1:
+        return [param + " --individual "  + ",".join(affected_samples)]
+    return ''

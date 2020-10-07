@@ -57,6 +57,7 @@ rule vep:
         stats='annotation/{set}/vep/{set}.stats.html'
     params:
         arguments=_multi_flag(config.get("rules").get("vep").get("arguments")),
+        g2p=lambda wildcards: g2p_command(wildcards, ped, config.get("rules").get("vep").get("g2p")),
         species=config.get("rules").get("vep").get("species"),
         assembly=config.get("rules").get("vep").get("assembly"),
         cache_dir=config.get("rules").get("vep").get("cache_dir"),
@@ -71,6 +72,7 @@ rule vep:
         "-i {input.vcf} "
         "-o {output.vcf} "
         "{params.arguments} "
+        "{params.g2p} "
         "--fork {threads} "
         "--warning_file {params.log} "
         "--stats_file {output.stats} "
@@ -84,7 +86,7 @@ rule snpSift_caseControl:
     output:
         'annotation/{set}/vep/{set}.vep.snpsift.vcf'
     params:
-        ped=config.get("rules").get("snpSift_caseControl").get("ped")
+        ped=config.get("ped")
     benchmark:
         "benchmarks/vep/{set}.snpSift_caseControl.txt"
     conda:
@@ -141,7 +143,7 @@ rule vcf_to_tabular:
     conda:
         "../envs/future.yaml"
     shell:
-        "python {params.script} {params.params} --print-format {input} {output}"
+        "python {params.script} {params.params} {input} {output}"
 
 # Merge filtered VCF and VEP annotations
 rule vep_to_tsv:

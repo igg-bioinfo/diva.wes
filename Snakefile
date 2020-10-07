@@ -11,6 +11,7 @@ min_version("5.10.0")
 samples = pd.read_csv(config["samples"], index_col="sample", sep="\t")
 units = pd.read_csv(config["units"], index_col=["unit"], dtype=str, sep="\t")
 sets = pd.read_csv(config["sets"], index_col=["set"], dtype=str, sep="\t")
+ped = pd.read_csv(config["ped"], header=None, dtype=str, sep="\t", names=['set','sample','father','mother','sex','affected'], index_col=False)
 reheader = pd.read_csv(config["reheader"],index_col="Client", dtype=str, sep="\t")
 reheader = reheader[reheader["LIMS"].isin(samples.index.values)]
 

@@ -1,6 +1,7 @@
 samples: ../conf/samples.tsv
 units: ../conf/units.tsv
 sets: ../conf/sets.tsv
+ped: ../conf/samples.ped
 reheader: ../conf/reheader.tsv
 internal_sid: "LIMS"
 
@@ -89,26 +90,24 @@ rules:
         arguments: "-remove -protocol intervar_20180118,gene4denovo201907 -operation f,f -nastring . -vcfinput -polish"
 
     vep:
+        g2p: "--plugin G2P,file=/mnt/references/vep/plugins/g2p/DDG2P.2020-10-01.csv"
         arguments: [
-                  ##["--plugin", "G2P,file=/mnt/references/vep/plugins/g2p/DDG2P.csv"],
                    ["--plugin", "dbNSFP,/mnt/references/vep/plugins/dbnsfp/dbNSFP4.1a.gz,SIFT_pred,SIFT4G_pred,Polyphen2_HDIV_pred,Polyphen2_HVAR_pred,LRT_pred,MutationTaster_pred,MutationAssessor_pred,FATHMM_pred,PROVEAN_pred,MetaSVM_pred,MetaLR_pred,Reliability_index,M-CAP_pred,DEOGEN2_pred,BayesDel_addAF_pred,ClinPred_pred,Aloft_pred,Aloft_Confidence,CADD_phred,DANN_score,fathmm-MKL_coding_pred,fathmm-XF_coding_pred,Eigen-phred_coding,GenoCanyon_score,GERP++_RS,1000Gp3_AF,gnomAD_exomes_AC,gnomAD_exomes_AN,gnomAD_exomes_AF,gnomAD_exomes_nhomalt,gnomAD_exomes_NFE_AC,gnomAD_exomes_NFE_AN,gnomAD_exomes_NFE_AF,gnomAD_exomes_NFE_nhomalt,gnomAD_exomes_POPMAX_AC,gnomAD_exomes_POPMAX_AN,gnomAD_exomes_POPMAX_AF,gnomAD_exomes_POPMAX_nhomalt,gnomAD_exomes_controls_AC,gnomAD_exomes_controls_AN,gnomAD_exomes_controls_AF,gnomAD_exomes_controls_nhomalt,gnomAD_genomes_AC,gnomAD_genomes_AN,gnomAD_genomes_AF,gnomAD_genomes_nhomalt,gnomAD_genomes_NFE_AC,gnomAD_genomes_NFE_AN,gnomAD_genomes_NFE_AF,gnomAD_genomes_NFE_nhomalt,clinvar_clnsig,clinvar_trait,clinvar_review,clinvar_MedGen_id,clinvar_OMIM_id,clinvar_Orphanet_id,Interpro_domain,GTEx_V8_gene,GTEx_V8_tissue,Geuvadis_eQTL_target_gene"],
                    ["--plugin", "dbscSNV,/mnt/references/vep/plugins/dbscSNV/dbscSNV1.1_GRCh38.txt.gz"],
                    ["--plugin", "SpliceAI,snv=/mnt/references/vep/plugins/spliceai/spliceai_scores.raw.snv.hg38.vcf.gz,indel=/mnt/references/vep/plugins/spliceai/spliceai_scores.raw.indel.hg38.vcf.gz"],
                    ["--plugin", "CADD,/mnt/references/vep/plugins/cadd_1.6_hg38/whole_genome_SNVs.tsv.gz,/mnt/references/vep/plugins/cadd_1.6_hg38/gnomad.genomes.r3.0.indel.tsv.gz"],
                    ["--plugin", "DisGeNET,file=/mnt/references/vep/plugins/disgenet/all_variant_disease_pmid_associations_final.tsv.gz,disease=1"],
+                   ["--plugin",  "gnomADpLI,/mnt/references/vep/plugins/gnomad_pli/gnomad.v2.1.1.lof_metrics.by_gene.clean.txt"],
                    ["--custom", "/mnt/references/vep/plugins/gnomad3.0/gnomad.genomes.r3.0.sites.trimmed_info.vcf.gz,gnomADg,vcf,exact,0,AF,AF_afr,AF_amr,AF_asj,AF_eas,AF_fin,AF_nfe,AF_oth"],
                    ["--sift p --polyphen p --gene_phenotype --regulatory", ""],
                    ["--uniprot --ccds --symbol --protein --tsl --canonical --mane --domains --biotype", ""],
                    ["--check_existing --clin_sig_allele 1 --max_af --af_gnomad --pubmed --variant_class ", ""],
-                   ["--plugin",  "gnomADpLI,/mnt/references/vep/plugins/gnomad_pli/gnomad.v2.1.1.lof_metrics.by_gene.clean.txt"],
                    ]
         cache_dir: "/mnt/references/vep"
         species: "homo_sapiens"
         assembly: "GRCh38"
-    snpSift_caseControl:
-        ped: "/mnt/projects/wes_test/conf/samples.ped"
     vcf_to_tabular:
-        params: "--do-not-split-sample"
+        params: "--print-format --do-not-split-sample"
     filter_vep:
         arguments: [
                    ["--filter", "'MAX_AF < 0.01 or not MAX_AF'"],
