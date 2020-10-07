@@ -152,6 +152,10 @@ def g2p_command(wildcards, ped, param):
     if param is None:
         return ''
     affected_samples = ped.loc[(ped['affected'] == '2') & (ped['set'] == wildcards.set), 'sample'].tolist()
+    log_dir = 'log_dir=annotation/' + wildcards.set + '/vep/' + wildcards.set + '.g2p_log'
+    txt_report = 'txt_report=annotation/' + wildcards.set + '/vep/' + wildcards.set + '.g2p_report.txt'
+    html_report = 'html_report=annotation/' + wildcards.set + '/vep/' + wildcards.set + '.g2p_report.html'
     if len(affected_samples) == 1:
-        return [param + " --individual "  + ",".join(affected_samples)]
+        return ["--individual " + ",".join(affected_samples) + ' ' + param + ',' + log_dir + ',' + txt_report + ',' + html_report]
     return ''
+
