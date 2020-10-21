@@ -26,8 +26,9 @@ This is an example of folder organization. In parenthesis the name of the pipeli
 
 ### Quick install
 
-1. Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
-2. Create a virtual environment with snakemake, as suggested [here](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html):
+ 1. Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
+
+ 2. Create a virtual environment with snakemake, as suggested [here](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html):
 First install mamba as a replacement of the default conda solver:
 ```bash
 conda install -c conda-forge mamba
@@ -36,11 +37,13 @@ Then, install Snakemake:
 ```bash
 mamba create -c conda-forge -c bioconda -n snakemake snakemake
 ```
-3. Activate the enviroment:
+
+ 3. Activate the enviroment:
 ```bash
 conda activate snakemake
 ```
-4. Run snakemake - see below
+
+ 4. Run snakemake - see below
 
 ## Running snakemake
  * Clone the repository from git-hub. E.g. for whole-exome analysis:
@@ -59,12 +62,12 @@ cd PROJECT_NAME
 ```
 
  * Edit the configuration files in **conf** subfolder:
+   * config.yaml
    * samples.tsv
    * samples.ped
    * units.tsv
-   * sets.tsv
 
- * Edit the Snakefile and uncomment the desired output files
+ * Edit the **Snakefile** and uncomment the desired output files
 
  * Run snakemake in dry-run mode to check if everything is fine. **YOUR_WORKING_DIR** could follow the format: **YYYY-MM-DD**.
 ```bash
