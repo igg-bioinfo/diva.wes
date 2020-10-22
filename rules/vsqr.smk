@@ -76,3 +76,26 @@ rule gatk_ApplyVQSR:
         "--recal-file {input.recal} -ts-filter-level 99.0 "
         "--tranches-file {input.tranches} -O {output} "
         ">& {log}"
+
+
+rule snpSift_caseControl_all:
+    input:
+        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz"        
+    output:
+        vcf='variant_calling/all.snp_recalibrated.indel_recalibrated.caseControls.vcf.gz',
+        index='variant_calling/all.snp_recalibrated.indel_recalibrated.caseControls.vcf.gz.tbi'
+    params:
+        ped=config.get("ped")
+    benchmark:
+        "benchmarks/gatk/SelectVariants/all.snp_recalibrated.indel_recalibrated.caseControls.txt"
+    conda:
+       "../envs/snpsift.yaml"
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=6)
+    shell:
+        "SnpSift caseControl "
+        "-tfam {params.ped} "
+        "-name _ALL "
+        "{input} "
+        "| bgzip -c "
+        "> {output.vcf} && "
+        "tabix -p vcf {output.vcf}"

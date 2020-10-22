@@ -21,6 +21,11 @@ known_variants:
 
 
 intervals:
+    AgilentSureSelectHumanAllExonV6r2:
+        bedTarget: "intervals/RefSeq_All_ncbiHg38_merged.bed"
+        hsProbes: "intervals/AgilentSureSelectHumanAllExonV6r2_S07604514_Covered.hg38.HybridSelection"
+        hsTarget: "intervals/AgilentSureSelectHumanAllExonV6r2_S07604514_Regions.hg38.HybridSelection"
+
     AgilentSureSelectHumanAllExonV7:
         bedTarget: "intervals/AgilentSureSelectHumanAllExonV7_S31285117_Regions.hg38.bed"
         hsProbes: "intervals/AgilentSureSelectHumanAllExonV7_S31285117_MergedProbes.hg38.HybridSelection"
