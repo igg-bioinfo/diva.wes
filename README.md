@@ -3,7 +3,7 @@
 
 # DiVA.call
 
-This is a fork of the original **DiVA** (DNA Variant Analysis), a [Snakemake](https://snakemake.readthedocs.io/en/stable/)-based pipeline for Next-Generation Sequencing **Exome** data analysis, developed at [CRS4 Next Generation Sequencing Core Facility](http://next.crs4.it). Software dependencies are directly managed by Snakemake using [Conda](https://docs.conda.io/en/latest/miniconda.html), ensuring the reproducibility of the workflow according to [FAIR](https://www.go-fair.org/fair-principles/) principles.
+This is a fork of **DiVA** (DNA Variant Analysis), a [Snakemake](https://snakemake.readthedocs.io/en/stable/)-based pipeline for Next-Generation Sequencing **Exome** data analysis, developed at [CRS4 Next Generation Sequencing Core Facility](http://next.crs4.it). Software dependencies are directly managed by Snakemake using [Conda](https://docs.conda.io/en/latest/miniconda.html), ensuring the reproducibility of the workflow according to [FAIR](https://www.go-fair.org/fair-principles/) principles.
 
 In this repo we retained the first part of the analysis, from FASTQ to the recalibrated VCF following GATK Best Practices, and quality control. This pipeline should be executed to generate a **master** VCf including all the samples, and should re-executed when new samples are available.
 
@@ -24,29 +24,8 @@ This is an example of folder organization. In parenthesis the name of the pipeli
     
 ```
 
-### Quick install
-
- 1. Install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
-
- 2. Create a virtual environment with snakemake, as suggested [here](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html):
-First install mamba as a replacement of the default conda solver:
-```bash
-conda install -c conda-forge mamba
-```
-Then, install Snakemake:
-```bash
-mamba create -c conda-forge -c bioconda -n snakemake snakemake
-```
-
- 3. Activate the enviroment:
-```bash
-conda activate snakemake
-```
-
- 4. Run snakemake - see below
-
-## Running snakemake
- * Clone the repository from git-hub. E.g. for whole-exome analysis:
+## Running DiVA.call
+ * Clone the repository from git-hub:
 ```bash
 git clone --recursive https://github.com/igg-bioinfo/diva.call.git
 ```
@@ -56,18 +35,35 @@ git clone --recursive https://github.com/igg-bioinfo/diva.call.git
 mv diva.call PROJECT_NAME
 ```
 
- * Cd into the newly created folder:
+ * cd into the newly created folder:
 ```bash
 cd PROJECT_NAME
 ```
 
  * Edit the configuration files in **conf** subfolder:
-   * config.yaml
+   * config.yaml - here you should set the paths to your reference genome, target regions, etc.
    * samples.tsv
    * samples.ped
    * units.tsv
 
- * Edit the **Snakefile** and uncomment the desired output files
+ * Edit the **Snakefile** and uncomment the output files you need
+
+ * If conda package manager is not available, install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
+
+ * Create a virtual environment containing snakemake, as suggested [here](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html). First install mamba as a replacement of the default conda solver:
+```bash
+conda install -c conda-forge mamba
+```
+
+ * Then, install snakemake:
+```bash
+mamba env create --name snakemake --file environment.yaml
+```
+
+ * Activate the enviroment:
+```bash
+conda activate snakemake
+```
 
  * Run snakemake in dry-run mode to check if everything is fine. **YOUR_WORKING_DIR** could follow the format: **YYYY-MM-DD**.
 ```bash

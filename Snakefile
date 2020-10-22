@@ -16,7 +16,7 @@ include:
 # When using snakemake profiles to run the pipeline on a computer cluster,
 # the following rules will be executed locally instead of being submitted
 # by the job scheduler 
-localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe, vcf_to_tabular
+localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
 
 rule all:
     input:
