@@ -20,20 +20,30 @@ localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe
 
 rule all:
     input:
+         # Final CRAM
 #        expand("reads/recalibrated/{sample.sample}.dedup.recal.cram", sample=samples.reset_index().itertuples()),
+         # Coverage statistics on target region
 #        expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
+         # Coverage statistics on ccds regions
 #        expand("reads/recalibrated/{sample.sample}.ccds.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
+         # Interactive HTML QC report
 #        "qc/multiqc.html",
          # Check relationships between each pair of samples
 #        "qc/kinship/multiqc_heatmap.html",
+         # Coverage plot for selected genes
 #        "qc/bedtools/heatmap_enriched_regions.png",
+         # Per sample g.vcf
 #        expand("variant_calling/{sample.sample}.g.vcf.gz",sample=samples.reset_index().itertuples()),
+         # GenomicsDBImport
 #        "db/imports/check",
+         # Variant calling on mtDNA - experimental
 #        "variant_calling/mtDNA.vcf",
-         # VCF file, before recalibration 
+         # VCF before recalibration
 #        "variant_calling/all.vcf.gz",
-         # Final VCF file, after recalibration 
+         # VCF after recalibration
 #        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz",
+         # Final VCF, after genotype count
+#        "variant_calling/all.snp_recalibrated.indel_recalibrated.caseControls.vcf.gz",
 
 
 include_prefix="rules"
