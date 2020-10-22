@@ -41,14 +41,14 @@ cd PROJECT_NAME
 ```
 
  * Edit the configuration files in **conf** subfolder:
-   * config.yaml - here you should set the paths to your reference genome, target regions, etc.
-   * samples.tsv
-   * samples.ped
-   * units.tsv
+   * config.yaml - paths to your reference files: genome, target regions, etc.
+   * samples.tsv - associate samples to FASTQ files
+   * samples.ped - pedigree file in [ped](https://gatk.broadinstitute.org/hc/en-us/articles/360035531972-PED-Pedigree-format) format
+   * units.tsv - paths to FASTQ files
 
  * Edit the **Snakefile** and uncomment the output files you need
 
- * If conda package manager is not available, install [miniconda](https://docs.conda.io/en/latest/miniconda.html)
+ * If conda package manager is not available, install [miniconda](https://docs.conda.io/en/latest/miniconda.html).
 
  * Create a virtual environment containing snakemake, as suggested [here](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html). First install mamba as a replacement of the default conda solver:
 ```bash
