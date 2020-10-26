@@ -133,3 +133,16 @@ def get_units_by_sample(wildcards, samples, label='units', prefix='before',
                                                   [label]][0].split(',')]
 def get_odp(wildcards,samples,optical_dup='odp'):
     return "OPTICAL_DUPLICATE_PIXEL_DISTANCE={}".format(samples.loc[wildcards.sample, [optical_dup]].dropna()[0])
+
+
+def get_kit(wildcards,samples,enrichment_kit='kit', specific_kit=None):
+    if specific_kit:
+        kit_name=specific_kit
+    else:   kit_name=samples.loc[wildcards.sample, [enrichment_kit]].dropna()[0]
+    hsprobes=kits.loc[kit_name, ["hsProbes"]].dropna()[0]
+    hstarget = kits.loc[kit_name, ["hsTarget"]].dropna()[0]
+    print(hsprobes)
+    print(hstarget)
+    return hsprobes,hstarget
+#    return samples.loc[wildcards.sample, [enrichment_kit]].dropna()[0]
+

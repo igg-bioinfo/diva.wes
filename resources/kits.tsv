@@ -1,0 +1,5 @@
+kit	hsProbes	hsTarget
+AgilentSureSelectHumanAllExonV7	intervals/AgilentSureSelectHumanAllExonV7_S31285117_MergedProbes.hg38.HybridSelection	intervals/AgilentSureSelectHumanAllExonV7_S31285117_Regions.hg38.HybridSelection
+IDT_xGen_ExomeResearchPanel_v1	intervals/xgen-exome-research-panel-v1-probes-hg38.HybridSelection	intervals/xgen-exome-research-panel-v1-targets-hg38.HybridSelection
+IDT_xGen_ExomeResearchPanel_v2	intervals/xgen-exome-research-panel-v2-probes-hg38.HybridSelection	intervals/xgen-exome-research-panel-v2-targets-hg38.HybridSelection
+ccds	intervals/ccds_hg38_Probes.HybridSelection	intervals/ccds_hg38_Target.HybridSelection
