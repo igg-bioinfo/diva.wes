@@ -1,6 +1,7 @@
 samples: ../conf/samples.tsv
 units: ../conf/units.tsv
 ped: ../conf/samples.ped
+kits: ../resources/kits.tsv
 internal_sid: "LIMS"
 
 references:
@@ -9,6 +10,7 @@ references:
     release: "hg38"
 
 genome_fasta: "Homo_sapiens_assembly38.fasta"
+refseq_intervals: "hg38_refseq.intervals"
 
 known_variants:
     dbsnp: "Homo_sapiens_assembly38.dbsnp138.vcf"
@@ -20,38 +22,6 @@ known_variants:
     ph1_indels: "Homo_sapiens_assembly38.known_indels.vcf.gz"
 
 
-intervals:
-    AgilentSureSelectHumanAllExonV6r2:
-        bedTarget: "intervals/RefSeq_All_ncbiHg38_merged.bed"
-        hsProbes: "intervals/AgilentSureSelectHumanAllExonV6r2_S07604514_Covered.hg38.HybridSelection"
-        hsTarget: "intervals/AgilentSureSelectHumanAllExonV6r2_S07604514_Regions.hg38.HybridSelection"
-
-    AgilentSureSelectHumanAllExonV7:
-        bedTarget: "intervals/AgilentSureSelectHumanAllExonV7_S31285117_Regions.hg38.bed"
-        hsProbes: "intervals/AgilentSureSelectHumanAllExonV7_S31285117_MergedProbes.hg38.HybridSelection"
-        hsTarget: "intervals/AgilentSureSelectHumanAllExonV7_S31285117_Regions.hg38.HybridSelection"
-
-    IDT_xGen_ExomeResearchPanel_v1:
-        bedTarget: "intervals/xgen-exome-research-panel-v1-targets-hg38.bed"
-        hsProbes: "intervals/xgen-exome-research-panel-v1-probes-hg38.HybridSelection"
-        hsTarget: "intervals/xgen-exome-research-panel-v1-targets-hg38.HybridSelection"
-
-    IDT_xGen_ExomeResearchPanel_v2:
-        bedTarget: "intervals/xgen-exome-research-panel-v2-targets-hg38.bed"
-        hsProbes: "intervals/xgen-exome-research-panel-v2-probes-hg38.HybridSelection"
-        hsTarget: "intervals/xgen-exome-research-panel-v2-targets-hg38.HybridSelection"
-
-    ccds:
-        bedTarget: "intervals/ccds_hg38_Target.bed"
-        hsProbes: "intervals/ccds_hg38_Probes.HybridSelection"
-        hsTarget: "intervals/ccds_hg38_Target.HybridSelection"
-
-
-intervals_default: "IDT_xGen_ExomeResearchPanel_v2"
-samples_intervals:
-    DNA16-0389-R0001: "_enrichment_kit_"
-intervals_ccds: "ccds"
-interval_target_list: "BED FILE WITH TARGET POSITIONS FOR COVERAGE CHECK"
 tmp_dir: "/mnt/tmp"
 
 rules:
@@ -79,3 +49,5 @@ rules:
         db_suffix: "db_gatk"
     bedtools_coverage:
         params: ''
+        sample_info: ''
+        interval_target_list: "BED FILE WITH TARGET POSITIONS FOR COVERAGE CHECK"

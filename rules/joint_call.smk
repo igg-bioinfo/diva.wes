@@ -9,7 +9,7 @@ rule gatk_GenomicsDBImport:
        "../envs/gatk.yaml"
     params:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
-        intervals = resolve_single_filepath(*references_abs_path(),config.get("intervals").get(config.get("intervals_default")).get("bedTarget")),
+        intervals = resolve_single_filepath(*references_abs_path(),config.get("refseq_intervals")),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
         gvcfs=_multi_flag_dbi("-V", expand("variant_calling/{sample.sample}.g.vcf.gz", sample=samples.reset_index().itertuples())),
         db=config.get("rules").get("gatk_GenomicsDBImport").get("db_suffix")

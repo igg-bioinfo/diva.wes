@@ -5,7 +5,7 @@ rule bedtools_coverage:
     output:
         "qc/bedtools/{sample}.coverage.tsv"
     params:
-        interval=config.get("interval_list"),
+        interval=resolve_single_filepath(*references_abs_path(),config.get("refseq_intervals")),
         params=config.get("rules").get("bedtools_coverage").get("params")
     conda:
         "../envs/bedtools.yaml"
@@ -23,7 +23,7 @@ rule bedtools_select_regions_coverage:
     output:
         "qc/bedtools/target/{sample}.coverage.target.tsv"
     params:
-        interval=config.get("interval_target_list")
+        interval=config.get("rules").get("bedtools_coverage").get("interval_target_list")
     conda:
         "../envs/bedtools.yaml"
     shell:
@@ -42,7 +42,7 @@ rule coverage_heatmap:
         report("qc/bedtools/heatmap_enriched_regions_low_coverage.png", category="COVERAGE")
     params:
         path="qc/bedtools/",
-        sample_files=config.get("sample_info"),
+        sample_files=config.get("rules").get("bedtools_coverage").get("sample_info"),
         reheader="reheader.tsv"
     conda:
         "../envs/heatmap.yaml"
