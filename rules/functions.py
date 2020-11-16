@@ -139,10 +139,7 @@ def get_kit(wildcards,samples,enrichment_kit='kit', specific_kit=None):
     if specific_kit:
         kit_name=specific_kit
     else:   kit_name=samples.loc[wildcards.sample, [enrichment_kit]].dropna()[0]
-    hsprobes=kits.loc[kit_name, ["hsProbes"]].dropna()[0]
-    hstarget = kits.loc[kit_name, ["hsTarget"]].dropna()[0]
-    print(hsprobes)
-    print(hstarget)
+    hsprobes = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["hsProbes"]].dropna()[0])
+    hstarget = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["hsTarget"]].dropna()[0])
     return hsprobes,hstarget
-#    return samples.loc[wildcards.sample, [enrichment_kit]].dropna()[0]
 
