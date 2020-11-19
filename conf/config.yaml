@@ -10,7 +10,7 @@ references:
     release: "hg38"
 
 genome_fasta: "Homo_sapiens_assembly38.fasta"
-refseq_intervals: "hg38_refseq.intervals"
+refseq_intervals: "intervals/RefSeq_All_ncbiHg38_merged.bed"
 
 known_variants:
     dbsnp: "Homo_sapiens_assembly38.dbsnp138.vcf"
