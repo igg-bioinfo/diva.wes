@@ -11,7 +11,7 @@ rule freebayes_mtdna:
         "benchmarks/freebayes/mtDNA.txt"
     conda:
        "../envs/freebayes.yaml"
-    threads: conservative_cpu_count()
+    threads: config.get("rules").get("freebayes_mtdna").get("threads")
     shell:
         "freebayes "
         "-f {params.genome} "

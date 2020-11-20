@@ -12,7 +12,7 @@ rule picard_mendelian_violations:
         "logs/picard/FindMendelianViolations/{set}.mendel.log"
     conda:
         "../envs/picard.yaml"
-    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("picard_mendelian_violations").get("threads"))
     shell:
         "picard FindMendelianViolations "
         "{params.custom} "
@@ -35,6 +35,7 @@ rule check_relationships:
         "../envs/vcftools.yaml"
     log:
         "logs/vcftools/relatedness2.log"
+    threads: config.get("rules").get("check_relationships").get("threads")
     shell:
         "vcftools "
         "--gzvcf {input} "

@@ -17,6 +17,7 @@ rule gatk_GenomicsDBImport:
         "logs/gatk/GenomicsDBImport/genomicsdbi.info.log"
     benchmark:
         "benchmarks/gatk/GenomicsDBImport/genomicsdbi.txt"
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("gatk_GenomicsDBImport").get("threads"))
     shell:
         "mkdir -p db; "
         "gatk GenomicsDBImport --java-options {params.custom} "
@@ -44,6 +45,7 @@ rule gatk_GenotypeGVCFs:
         "logs/gatk/GenotypeGVCFs/all.info.log"
     benchmark:
         "benchmarks/gatk/GenotypeGVCFs/all.txt"
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("gatk_GenotypeGVCFs").get("threads"))
     shell:
         "gatk GenotypeGVCFs --java-options {params.custom} "
         "-R {params.genome} "

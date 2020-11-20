@@ -22,6 +22,7 @@ rule multiqc:
         "../envs/multiqc.yaml"
     log:
         "logs/multiqc/multiqc.log"
+    threads: config.get("rules").get("multiqc").get("threads")
     shell:
         "multiqc "
         "{input} "
@@ -79,6 +80,7 @@ rule multiqc_heatmap:
         "../envs/multiqc.yaml"
     log:
         "logs/multiqc/multiqc_heatmap.log"
+    threads: config.get("rules").get("multiqc_heatmap").get("threads")
     shell:
         "multiqc "
         "{input} "

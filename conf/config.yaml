@@ -25,28 +25,74 @@ known_variants:
 tmp_dir: "/mnt/tmp"
 
 rules:
-    bwa-mem:
+    bwa_mem:
         arguments: "-M"
         platform: "illumina"
+        threads: 6
     multiqc:
         arguments: "--force --cl_config 'picard_config: { general_stats_target_coverage: [10,20,30] }' --interactive --cl_config 'max_table_rows: 700'"
+        threads: 12
+    multiqc_heatmap:
+        threads: 4
     trim_galore_pe:
         arguments: "-q 20 --cores 4 --fastqc --fastqc_args '--outdir qc/fastqc --quiet' --paired"
+        threads: 8
     trim_galore_se:
         arguments: "-q 20 --cores 4 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
+        threads: 8
     picard_MarkDuplicates:
         arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
+        threads: 6
+    picard_pre_HsMetrics:
+        threads: 1
+    picard_HsMetrics:
+        threads: 2
+    picard_InsertSizeMetrics:
+        threads: 2
     picard_WGSMetrics:
         arguments: "MINIMUM_MAPPING_QUALITY=-1 MINIMUM_BASE_QUALITY=-1 READ_LENGTH=150 COUNT_UNPAIRED=true"
-    picard_gc:
+    picard_gc_bias:
         params: ""
-    gatk_BQSR:
+        threads: 8
+    picard_mendelian_violations:
+        threads: 6
+    gatk_BQSR_data_processing:
         known_sites:
             - dbsnp
             - mills
             - ph1_indel
+        threads: 6
+    gatk_ApplyBQSR:
+        threads: 6
+    gatk_BQSR_quality_control:
+        threads: 6
+    gatk_HaplotypeCaller_ERC_GVCF:
+        threads: 2
     gatk_GenomicsDBImport:
         db_suffix: "db_gatk"
+        threads: 20
+    gatk_GenotypeGVCFs:
+        threads: 20
+    gatk_VariantRecalibrator:
+        threads: 20
+    gatk_ApplyVQSR:
+        threads: 20
+    snpSift_caseControl_all:
+        threads: 6
+    samtools_sort:
+        threads: 6
+    samtools_merge:
+        threads: 6
+    samtools_cram_to_bam:
+        threads: 6
+    samtools_bam_to_cram:
+        threads: 6
+    samtools_index:
+        threads: 1
+    check_relationships:
+        threads: 8
+    freebayes_mtdna:
+        threads: 6
     bedtools_coverage:
         params: ''
         sample_info: ''

@@ -40,6 +40,7 @@ rule gatk_VariantRecalibrator:
         "../envs/gatk.yaml"
     benchmark:
         "benchmarks/gatk/VariantRecalibrator/{prefix}.{type}_recalibrate_info.txt"
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("gatk_VariantRecalibrator").get("threads"))
     shell:
         "gatk VariantRecalibrator --java-options {params.custom} "
         "-R {params.genome} "
@@ -69,6 +70,7 @@ rule gatk_ApplyVQSR:
         "logs/gatk/ApplyVQSR/{prefix}.{type}_recalibrate.log"
     benchmark:
         "benchmarks/gatk/ApplyVQSR/{prefix}.{type}_recalibrate.txt"
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("gatk_ApplyVQSR").get("threads"))
     shell:
         "gatk  ApplyVQSR --java-options {params.custom} "
         "-R {params.genome} "
@@ -90,7 +92,7 @@ rule snpSift_caseControl_all:
         "benchmarks/gatk/SelectVariants/all.snp_recalibrated.indel_recalibrated.caseControls.txt"
     conda:
        "../envs/snpsift.yaml"
-    threads: conservative_cpu_count(reserve_cores=2, max_cores=6)
+    threads: config.get("rules").get("snpSift_caseControl_all").get("threads")
     shell:
         "SnpSift caseControl "
         "-tfam {params.ped} "

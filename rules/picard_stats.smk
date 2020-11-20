@@ -13,6 +13,7 @@ rule picard_pre_HsMetrics:
    params:
        hsProbes = lambda wildcards: get_kit(wildcards,samples,enrichment_kit='kit', specific_kit=None)[0],
        hsTarget = lambda wildcards: get_kit(wildcards,samples,enrichment_kit='kit', specific_kit=None)[1]
+   threads: config.get("rules").get("picard_pre_HsMetrics").get("threads")
    shell:
        "samtools view -H  {input.bam} | cat - {params.hsProbes} > {output.hsProbes}; "
        "samtools view -H  {input.bam} | cat - {params.hsTarget} > {output.hsTarget}"
@@ -30,6 +31,7 @@ rule picard_HsMetrics:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
    benchmark:
        "benchmarks/picard/HsMetrics/{sample}.txt"
+   threads: config.get("rules").get("picard_HsMetrics").get("threads")
    shell:
        "picard {params.custom} CollectHsMetrics "
        "INPUT={input.bam} OUTPUT={output} "
@@ -49,6 +51,7 @@ rule picard_InsertSizeMetrics:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
    benchmark:
        "benchmarks/picard/IsMetrics/{sample}.txt"
+   threads: config.get("rules").get("picard_InsertSizeMetrics").get("threads")
    shell:
        "picard {params.custom} CollectInsertSizeMetrics "
        "INPUT={input.bam} "
@@ -113,13 +116,13 @@ rule picard_gc_bias:
     params:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
-        param=config.get("rules").get("picard_gc").get("params"),
+        param=config.get("rules").get("picard_gc_bias").get("params"),
         tmp_dir=config.get("tmp_dir")
     log:
         "logs/picard/CollectGcBiasMetrics/{sample}.gcbias.log"
     conda:
        "../envs/picard.yaml"
-    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("picard_gc_bias").get("threads"))
     shell:
         "picard "
         "CollectGcBiasMetrics "

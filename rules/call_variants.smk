@@ -15,7 +15,7 @@ rule gatk_HaplotypeCaller_ERC_GVCF:
         "logs/gatk/HaplotypeCaller/{sample}.genotype_info.log"
     benchmark:
         "benchmarks/gatk/HaplotypeCaller/{sample}.txt"
-    threads: 2
+    threads: config.get("rules").get("gatk_HaplotypeCaller_ERC_GVCF").get("threads")
     shell:
         "gatk HaplotypeCaller --java-options {params.custom} "
         "-R {params.genome} "
