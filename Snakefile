@@ -3,22 +3,19 @@ from snakemake.utils import validate, min_version
 ##### set minimum snakemake version #####
 min_version("5.10.0")
 
-
-## USER FILES ##
+## User files ##
 samples = pd.read_csv(config["samples"], index_col="sample", sep="\t")
 units = pd.read_csv(config["units"], index_col=["unit"], dtype=str, sep="\t")
 ped = pd.read_csv(config["ped"], header=None, dtype=str, sep="\t", names=['set','sample','father','mother','sex','affected'], index_col=False)
 kits=pd.read_csv(config["kits"],index_col="kit", dtype=str, sep="\t")
 
-##### local rules #####
-include:
-    "rules/functions.py"
-
+## Local rules ##
 # When using snakemake profiles to run the pipeline on a computer cluster,
 # the following rules will be executed locally instead of being submitted
 # by the job scheduler 
 localrules: all, pre_rename_fastq_pe, post_rename_fastq_pe, pre_rename_fastq_se, post_rename_fastq_se
 
+## Target files ##
 rule all:
     input:
          # Final CRAM
@@ -46,9 +43,10 @@ rule all:
          # Final VCF, after genotype count
 #        "variant_calling/all.snp_recalibrated.indel_recalibrated.caseControls.vcf.gz",
 
-
+## Load rules ##
 include_prefix="rules"
-
+include:
+    include_prefix + "/functions.py"
 include:
     include_prefix + "/trimming.smk"
 include:
@@ -75,4 +73,3 @@ include:
     include_prefix + "/coverage.smk"
 include:
     include_prefix + "/mtdna.smk"
-
