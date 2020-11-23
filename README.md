@@ -3,7 +3,7 @@
 
 # DiVA.call
 
-This is a fork of **DiVA** (DNA Variant Analysis), a [Snakemake](https://snakemake.readthedocs.io/en/stable/)-based pipeline for Next-Generation Sequencing **Exome** data analysis, developed at [CRS4 Next Generation Sequencing Core Facility](http://next.crs4.it). Software dependencies are directly managed by Snakemake using [Conda](https://docs.conda.io/en/latest/miniconda.html), ensuring the reproducibility of the workflow according to [FAIR](https://www.go-fair.org/fair-principles/) principles.
+This is a fork of **[DiVA](https://github.com/solida-core/diva)** (DNA Variant Analysis), a [Snakemake](https://snakemake.readthedocs.io/en/stable/)-based pipeline for Next-Generation Sequencing **Exome** data analysis, developed at [CRS4 Next Generation Sequencing Core Facility](http://next.crs4.it). Software dependencies are directly managed by Snakemake using [Conda](https://docs.conda.io/en/latest/miniconda.html), ensuring the reproducibility of the workflow according to [FAIR](https://www.go-fair.org/fair-principles/) principles.
 
 In this repo we retained the first part of the analysis, from FASTQ to the recalibrated VCF following GATK Best Practices, and quality control. This pipeline should be executed to generate a **master** VCf including all the samples, and should re-executed when new samples are available.
 

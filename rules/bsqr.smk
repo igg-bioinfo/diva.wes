@@ -77,7 +77,7 @@ rule gatk_BQSR_quality_control:
     params:
         custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
-        known_sites=get_known_sites(config.get("rules").get("gatk_BQSR").get("known_sites"))
+        known_sites=get_known_sites(config.get("rules").get("gatk_BQSR_data_processing").get("known_sites"))
     log:
         b="logs/gatk/BaseRecalibrator/{sample}_BQSR_quality_control_info.log",
         a="logs/gatk/AnalyzeCovariates/{sample}_BQSR_quality_control_cov_info.log"

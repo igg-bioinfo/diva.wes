@@ -66,7 +66,7 @@ include:
 include:
     include_prefix + "/qc.smk"
 include:
-    include_prefix + "/vsqr.smk"
+    include_prefix + "/vqsr.smk"
 include:
     include_prefix + "/identity_check.smk"
 include:
