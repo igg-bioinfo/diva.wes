@@ -48,18 +48,17 @@ rule all:
 
 
 include_prefix="rules"
-dima_path="dima/"
 
 include:
-    dima_path + include_prefix + "/trimming.smk"
+    include_prefix + "/trimming.smk"
 include:
-    dima_path + include_prefix + "/alignment.smk"
+    include_prefix + "/alignment.smk"
 include:
-    dima_path + include_prefix + "/samtools.smk"
+    include_prefix + "/samtools.smk"
 include:
-    dima_path + include_prefix + "/picard.smk"
+    include_prefix + "/picard.smk"
 include:
-    dima_path + include_prefix + "/bsqr.smk"
+    include_prefix + "/bsqr.smk"
 include:
     include_prefix + "/picard_stats.smk"
 include:
