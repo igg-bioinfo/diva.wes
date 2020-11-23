@@ -1,7 +1,7 @@
 [![depends](https://img.shields.io/badge/depends%20from-bioconda-brightgreen.svg)](http://bioconda.github.io/)
 [![snakemake](https://img.shields.io/badge/snakemake-5.3-brightgreen.svg)](https://snakemake.readthedocs.io/en/stable/)
 
-# DiVA.call
+# DiVA.wes
 
 This is a fork of **[DiVA](https://github.com/solida-core/diva)** (DNA Variant Analysis), a [Snakemake](https://snakemake.readthedocs.io/en/stable/)-based pipeline for Next-Generation Sequencing **Exome** data analysis, developed at [CRS4 Next Generation Sequencing Core Facility](http://next.crs4.it). Software dependencies are directly managed by Snakemake using [Conda](https://docs.conda.io/en/latest/miniconda.html), ensuring the reproducibility of the workflow according to [FAIR](https://www.go-fair.org/fair-principles/) principles.
 
@@ -14,7 +14,7 @@ This is an example of folder organization. In parenthesis the name of the pipeli
 ```
    ROOT
     │
-    ├── wes_master (diva.call)
+    ├── wes_master (diva.wes)
     |
     ├── project_A (diva.annotate)
     |
@@ -24,15 +24,15 @@ This is an example of folder organization. In parenthesis the name of the pipeli
     
 ```
 
-## Running DiVA.call
+## Running DiVA.wes
  * Clone the repository from git-hub:
 ```bash
-git clone --recursive https://github.com/igg-bioinfo/diva.call.git
+git clone https://github.com/igg-bioinfo/diva.wes.git
 ```
 
- * Rename the folder, from `diva.call` to your PROJECT_NAME:
+ * Rename the folder, from `diva.wes` to your PROJECT_NAME:
 ```bash
-mv diva.call PROJECT_NAME
+mv diva.wes PROJECT_NAME
 ```
 
  * cd into the newly created folder:
