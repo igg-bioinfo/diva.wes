@@ -2,6 +2,7 @@ samples: ../conf/samples.tsv
 units: ../conf/units.tsv
 ped: ../conf/samples.ped
 kits: ../resources/kits.tsv
+reheader: ../conf/reheader.tsv
 internal_sid: "LIMS"
 
 references:
