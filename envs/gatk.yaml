@@ -4,6 +4,6 @@ channels:
 - defaults
 - anaconda
 dependencies:
-- gatk4=4.1.8.1
+- gatk4=4.1.9.0
 - r-base=4.0.3
 - r-ggplot2

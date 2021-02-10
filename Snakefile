@@ -24,6 +24,8 @@ rule all:
 #        expand("reads/recalibrated/{sample.sample}.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
          # Coverage statistics on ccds regions
 #        expand("reads/recalibrated/{sample.sample}.ccds.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
+         # Coverage with GATK DepthOfCoverage
+#        expand("reads/recalibrated/{sample.sample}.sample_gene_summary", sample=samples.reset_index().itertuples()),
          # Interactive HTML QC report
 #        "qc/multiqc.html",
          # Check relationships between each pair of samples

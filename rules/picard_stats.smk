@@ -58,6 +58,33 @@ rule picard_InsertSizeMetrics:
        "OUTPUT={output.metrics} "
        "HISTOGRAM_FILE={output.histogram} "
 
+rule gatk_DepthOfCoverage:
+    input:
+        "reads/recalibrated/{sample}.dedup.recal.cram"
+    output:
+        "reads/recalibrated/{sample}.sample_gene_summary"
+    params:
+        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        gatk_intervals=resolve_single_filepath(*references_abs_path(),config.get("depthofcov_intervals")),
+        refseq_intervals=resolve_single_filepath(*references_abs_path(),config.get("refseq_intervals")),
+        prefix="reads/recalibrated/{sample}"
+    conda:
+        "../envs/gatk.yaml"
+    benchmark:
+        "benchmarks/gatk/DepthOfCoverage/{sample}.txt"
+    log:
+        "logs/gatk/DepthOfCoverage/{sample}.txt"
+    threads: 4
+    shell:
+        "gatk DepthOfCoverage "
+        "--omit-depth-output-at-each-base --omit-locus-table "
+        "-R {params.genome} "
+        "-O {params.prefix} "
+        "-I {input} "
+        "-gene-list {params.gatk_intervals} "
+        "--summary-coverage-threshold 10 --summary-coverage-threshold 30 --summary-coverage-threshold 50 "
+        "-L {params.refseq_intervals} "
+        ">& {log} "
 
 
 # rule pre_rename_bam_ccds:

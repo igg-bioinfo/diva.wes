@@ -12,6 +12,7 @@ references:
 
 genome_fasta: "Homo_sapiens_assembly38.fasta"
 refseq_intervals: "intervals/RefSeq_All_ncbiHg38_merged.bed"
+depthofcov_intervals: "intervals/CCDS_UCSC_Hg38.Select.refseq"
 
 known_variants:
     dbsnp: "Homo_sapiens_assembly38.dbsnp138.vcf"
