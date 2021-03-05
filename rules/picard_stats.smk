@@ -60,7 +60,8 @@ rule picard_InsertSizeMetrics:
 
 rule gatk_DepthOfCoverage:
     input:
-        "reads/recalibrated/{sample}.dedup.recal.cram"
+        cram="reads/recalibrated/{sample}.dedup.recal.cram",
+        crai="reads/recalibrated/{sample}.dedup.recal.cram.crai"
     output:
         "reads/recalibrated/{sample}.sample_gene_summary"
     params:
@@ -80,7 +81,7 @@ rule gatk_DepthOfCoverage:
         "--omit-depth-output-at-each-base --omit-locus-table "
         "-R {params.genome} "
         "-O {params.prefix} "
-        "-I {input} "
+        "-I {input.cram} "
         "-gene-list {params.gatk_intervals} "
         "--summary-coverage-threshold 10 --summary-coverage-threshold 30 --summary-coverage-threshold 50 "
         "-L {params.refseq_intervals} "
