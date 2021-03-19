@@ -66,8 +66,8 @@ rule gatk_DepthOfCoverage:
         "reads/recalibrated/{sample}.sample_gene_summary"
     params:
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
-        gatk_intervals=resolve_single_filepath(*references_abs_path(),config.get("depthofcov_intervals")),
-        refseq_intervals=resolve_single_filepath(*references_abs_path(),config.get("refseq_intervals")),
+        cov_refseq=resolve_single_filepath(*references_abs_path(),config.get("depthofcov_refseq")),
+        cov_intervals=resolve_single_filepath(*references_abs_path(),config.get("depthofcov_intervals")),
         prefix="reads/recalibrated/{sample}"
     conda:
         "../envs/gatk.yaml"
@@ -82,9 +82,9 @@ rule gatk_DepthOfCoverage:
         "-R {params.genome} "
         "-O {params.prefix} "
         "-I {input.cram} "
-        "-gene-list {params.gatk_intervals} "
+        "-gene-list {params.cov_refseq} "
         "--summary-coverage-threshold 10 --summary-coverage-threshold 30 --summary-coverage-threshold 50 "
-        "-L {params.refseq_intervals} "
+        "-L {params.cov_intervals} "
         ">& {log} "
 
 
