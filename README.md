@@ -77,7 +77,7 @@ snakemake --cores 32 --use-conda --configfile conf/config.yaml --printshellcmds 
 
  * If you are happy with the --dryrun, run snakemake:
 ```bash
-snakemake --cores 32 --use-conda --configfile conf/config.yaml --printshellcmds -d YOUR_WORKING_DIR --rerun-incomplete --keep-going
+snakemake --cores 32 --use-conda --configfile conf/config.yaml --printshellcmds -d YOUR_WORKING_DIR --rerun-incomplete --keep-going --conda-frontend mamba
 ```
 
 **Tip:** For large projects, we suggest to run snakemake in a [screen](https://linux.die.net/man/1/screen) session.
