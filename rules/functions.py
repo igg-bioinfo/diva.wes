@@ -129,6 +129,8 @@ def get_references_label(ref='references'):
 
 def get_units_by_sample(wildcards, samples, label='units', prefix='before',
                         suffix='after'):
+    # Force index to string to avoid error with numbers as sample names (e.g. 123)
+    samples.index = samples.index.map(str)
     return [prefix+i+suffix for i in samples.loc[wildcards.sample,
                                                   [label]][0].split(',')]
 def get_odp(wildcards,samples,optical_dup='odp'):
