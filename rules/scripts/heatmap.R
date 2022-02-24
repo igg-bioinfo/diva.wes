@@ -18,7 +18,7 @@ print("Reading files:")
 mat <- matrix(data = 0 ,nrow=length(count.fields(paste(bedtools_path,files[1],sep="/"))), ncol=length(files))
 for (i  in 1:length(files)){
   a <- read.table(paste(bedtools_path,files[i],sep="/"), sep="\t", header=F)
-  mat[,i] <- as.numeric(a[,10])
+  mat[,i] <- as.numeric(a[,7])
   cat(paste(i,"/",length(files),sep=""),"\n")
 }
 colnames(mat) <- gsub(".coverage.tsv","",files)
