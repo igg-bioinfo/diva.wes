@@ -83,7 +83,7 @@ rule gatk_DepthOfCoverage:
         "-O {params.prefix} "
         "-I {input.cram} "
         "-gene-list {params.cov_refseq} "
-        "--summary-coverage-threshold 10 --summary-coverage-threshold 30 --summary-coverage-threshold 50 "
+        "--summary-coverage-threshold 10 --summary-coverage-threshold 20 --summary-coverage-threshold 30 "
         "-L {params.cov_intervals} "
         ">& {log} "
 
