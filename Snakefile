@@ -26,6 +26,8 @@ rule all:
 #        expand("reads/recalibrated/{sample.sample}.ccds.dedup.recal.hs.txt",sample=samples.reset_index().itertuples()),
          # Coverage with GATK DepthOfCoverage
 #        expand("reads/recalibrated/{sample.sample}.sample_gene_summary", sample=samples.reset_index().itertuples()),
+         # CNV kit
+        expand("/mnt/projects/cnv_wes/samples/{sample.sample}.cnv.vcf.gz", sample=samples.reset_index().itertuples()),
          # Interactive HTML QC report
 #        "qc/multiqc.html",
          # Check relationships between each pair of samples
@@ -41,7 +43,7 @@ rule all:
          # VCF before recalibration
 #        "variant_calling/all.vcf.gz",
          # VCF after recalibration
-#        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz",
+        "variant_calling/all.snp_recalibrated.indel_recalibrated.vcf.gz",
          # Final VCF, after genotype count
 #        "variant_calling/all.snp_recalibrated.indel_recalibrated.caseControls.vcf.gz",
 
@@ -75,3 +77,6 @@ include:
     include_prefix + "/coverage.smk"
 include:
     include_prefix + "/mtdna.smk"
+include:
+    include_prefix + "/cnvkit.smk"
+

@@ -1,0 +1,5 @@
+channels:
+  - bioconda
+dependencies:
+  - cnvkit=0.9.9
+  - tabix
