@@ -143,5 +143,8 @@ def get_kit(wildcards,samples,enrichment_kit='kit', specific_kit=None):
     else:   kit_name=samples.loc[wildcards.sample, [enrichment_kit]].dropna()[0]
     hsprobes = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["hsProbes"]].dropna()[0])
     hstarget = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["hsTarget"]].dropna()[0])
-    return hsprobes,hstarget
+    cnvTarget = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["cnvTarget"]].dropna()[0])
+    cnvAntitarget = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["cnvAntitarget"]].dropna()[0])
+    cnvRef = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["cnvRef"]].dropna()[0])
+    return hsprobes,hstarget,cnvTarget,cnvAntitarget,cnvRef
 

@@ -14,10 +14,6 @@ genome_fasta: "Homo_sapiens_assembly38.fasta"
 refseq_intervals: "intervals/RefSeq_All_ncbiHg38_merged.bed"
 depthofcov_intervals: "intervals/ucsc.hg38.refSeqCurated.cdsOnly.bed"
 depthofcov_refseq: "intervals/ucsc.RefSeqSelectMANE.hg38-2022-03-18.refseq"
-cnvkit_target: "cnvkit_bed/xgen-exome-research-panel-v1_target.bed"
-cnvkit_antitarget: "cnvkit_bed/xgen-exome-research-panel-v1_antitarget.bed"
-refFlat: "cnvkit_bed/refFlat.hg38.txt.gz"
-reference_exomeV1: "cnvkit_bed/xgen-exome-research-panel-v1_reference.hg38.cnn"
 
 known_variants:
     dbsnp: "Homo_sapiens_assembly38.dbsnp138.vcf"

@@ -8,7 +8,7 @@ rule cnvkit_target:
        "../envs/cnvkit.yaml"
     params:
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
-        target=resolve_single_filepath(*references_abs_path(),config.get("cnvkit_target"))      
+        target = lambda wildcards: get_kit(wildcards,samples,enrichment_kit='kit', specific_kit=None)[2]      
     log:
         "logs/cnvkit/{sample}.cnvkit_coverage_target.log"
     benchmark:
@@ -31,7 +31,7 @@ rule cnvkit_antitarget:
        "../envs/cnvkit.yaml"
     params:
         genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
-        antitarget=resolve_single_filepath(*references_abs_path(),config.get("cnvkit_antitarget"))
+        antitarget = lambda wildcards: get_kit(wildcards,samples,enrichment_kit='kit', specific_kit=None)[3]
     log:
         "logs/cnvkit/{sample}.cnvkit_coverage_antitarget.log"
     benchmark:
@@ -51,8 +51,7 @@ rule cnvkit_fix:
     output:
         temp("cnvkit/{sample}.cnr")
     params:
-        ##### MODIFICARE ##### La ref dipende dal kit usato per quel campione
-        reference=resolve_single_filepath(*references_abs_path(),config.get("reference_exomeV1"))
+        reference = lambda wildcards: get_kit(wildcards,samples,enrichment_kit='kit', specific_kit=None)[4]
     log:
         "logs/cnvkit/{sample}.cnvkit_fix.log"
     benchmark:
@@ -68,7 +67,7 @@ rule cnvkit_fix:
         "-o {output} "
         "> {log}"
 
-# single sample, con snakemake
+# single sample
 rule cnvkit_segment:
     input:
         "cnvkit/{sample}.cnr"
@@ -90,7 +89,7 @@ rule cnvkit_segment:
         "-o {output} "
         "> {log}"
 
-# single sample, con snakemake
+# single sample
 rule cnvkit_segmetrics:
     input:
         bins="cnvkit/{sample}.cnr",
@@ -114,7 +113,7 @@ rule cnvkit_segmetrics:
         "{params.metrics} "
         "> {log}"
 
-# single sample, con snakemake
+# single sample
 rule cnvkit_call:
     input:
         "cnvkit/{sample}.segmetrics.output"
@@ -140,7 +139,7 @@ rule cnvkit_call:
         "-o {output} "
         "> {log}"
 
-# single sample, con snakemake
+# single sample
 rule cnvkit_export:
     input:
         "cnvkit/{sample}.call"
@@ -160,7 +159,7 @@ rule cnvkit_export:
         "{input} "
         "2> {log} | bgzip > {output.gz} && tabix -p vcf {output.gz}"
 
-# single sample, con snakemake
+# single sample
 #rule cnvkit_plot_diagram:
 #    input:
 #        "cnvkit/{sample}.call.cns"
@@ -182,7 +181,7 @@ rule cnvkit_export:
 #        "> {log}"
 
 
-# single sample, con snakemake
+# single sample
 #rule cnvkit_plot_scatter:
 #    input:
 #        call="cnvkit/{sample}.call.cns",
