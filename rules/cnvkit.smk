@@ -144,8 +144,8 @@ rule cnvkit_export:
     input:
         "cnvkit/{sample}.call"
     output:
-        gz="/mnt/projects/cnv_wes/samples/{sample}.cnv.vcf.gz",
-        tbi="/mnt/projects/cnv_wes/samples/{sample}.cnv.vcf.gz.tbi"
+        gz="cnvkit/{sample}.cnv.vcf.gz",
+        tbi="cnvkit/{sample}.cnv.vcf.gz.tbi"
     params:
         format="vcf"
     log:
