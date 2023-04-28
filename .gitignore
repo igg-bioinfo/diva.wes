@@ -9,6 +9,8 @@ __pycache__/
 *.so
 
 20*/
+conf/*.*
+Snakefile
 conf/old/
 conf/old_pv/
 # Distribution / packaging
