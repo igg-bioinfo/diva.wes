@@ -114,3 +114,5 @@ rules:
         threads: 2
     cnvkit_export:
         threads: 2
+    cnvkit_export_seg:
+        threads: 2

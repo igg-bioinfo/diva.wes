@@ -49,7 +49,7 @@ rule cnvkit_fix:
         target = "cnvkit/{sample}.targetcoverage.cnn",
         antitarget = "cnvkit/{sample}.antitargetcoverage.cnn"
     output:
-        temp("cnvkit/{sample}.cnr")
+        "cnvkit/{sample}.cnr"
     params:
         reference = lambda wildcards: get_kit(wildcards,samples,enrichment_kit='kit', specific_kit=None)[4]
     log:
@@ -72,7 +72,7 @@ rule cnvkit_segment:
     input:
         "cnvkit/{sample}.cnr"
     output:
-        temp("cnvkit/{sample}.cns")
+        "cnvkit/{sample}.cns"
     params:
         segmentation_algorithm="hmm-germline" # default "cbs"
     log:
@@ -95,7 +95,7 @@ rule cnvkit_segmetrics:
         bins="cnvkit/{sample}.cnr",
         segments="cnvkit/{sample}.cns"
     output:
-        temp("cnvkit/{sample}.segmetrics.output")
+        "cnvkit/{sample}.segmetrics.output"
     params:
         metrics="--ci --pi"
     log:
@@ -118,7 +118,7 @@ rule cnvkit_call:
     input:
         "cnvkit/{sample}.segmetrics.output"
     output:
-        temp("cnvkit/{sample}.call")
+        "cnvkit/{sample}.call"
     params:
         filter="--filter ci",
         method="threshold",
@@ -146,18 +146,60 @@ rule cnvkit_export:
     output:
         gz="cnvkit/{sample}.cnv.vcf.gz",
         tbi="cnvkit/{sample}.cnv.vcf.gz.tbi"
-    params:
-        format="vcf"
     log:
         "logs/cnvkit/{sample}.export.log"
     conda:
         "../envs/cnvkit.yaml"
     threads: config.get("rules").get("cnvkit_export").get("threads")
     shell:
-        "cnvkit.py export "
-        "{params.format} "
+        "cnvkit.py export vcf "
         "{input} "
         "2> {log} | bgzip > {output.gz} && tabix -p vcf {output.gz}"
+
+# single sample
+rule cnvkit_export_seg:
+    input:
+        "cnvkit/{sample}.cns"
+    output:
+        "cnvkit/{sample}.seg"
+    log:
+        "logs/cnvkit/{sample}.export_seg.log"
+    benchmark:
+        "benchmarks/cnvkit/{sample}.cnvkit_export_seg.txt"
+    conda:
+        "../envs/cnvkit.yaml"
+    threads: config.get("rules").get("cnvkit_export_seg").get("threads")
+    shell:
+        "cnvkit.py export seg "
+        "{input} "
+        "-o {output} "
+        "> {log}"
+
+# single sample
+#rule cnvkit_plot_scatter:
+#    input:
+#        call="cnvkit/{sample}.cns",
+#        bin="cnvkit/{sample}.cnr"
+#    output:
+#        "cnvkit/{sample}.cnv.scatter.png"
+#    params:
+#        sample_name="{sample}",
+#        segment_color="red",
+#        limits="--y-min -2 --y-max 2.5"
+#        # regions="-c chrN:start-end"
+#    log:
+#        "logs/cnvkit/{sample}.scatter.log"
+#    conda:
+#        "../envs/cnvkit.yaml"
+#    shell:
+#        "cnvkit.py scatter "
+#        "-s {input.call} "
+#        "-s {input.bin} "
+#        "--segment-color {params.segment_color} "
+#        "-i {params.sample_name} "
+#        "{params.limits} "
+#        "-o {output} "
+#        "> {log}"
 
 # single sample
 #rule cnvkit_plot_diagram:
@@ -179,34 +221,6 @@ rule cnvkit_export:
 #        "-t {params.threshold} "
 #        "-o {output} "
 #        "> {log}"
-
-
-# single sample
-#rule cnvkit_plot_scatter:
-#    input:
-#        call="cnvkit/{sample}.call.cns",
-#        bin="cnvkit/{sample}.cnr"
-#    output:
-#        "cnvkit/{sample}.cnv.scatter.png"
-#    params:
-#        sample_name={sample},
-#        segment_color="red",
-#        limits="--y-min -2 --y-max 2.5"
-#        # regions="-c chrN:start-end"
-#    log:
-#        "logs/cnvkit/{sample}.scatter.log"
-#    conda:
-#        "../envs/cnvkit.yaml"
-#    shell:
-#        "cnvkit.py scatter "
-#        "{input.call} "
-#        "-s {input.call} "
-#        "--segment-color {params.segment_color} "
-#        "-i {params.sample_name} "
-#        "{params.limits} "
-#        "-o {output} "
-#        "> {log}"
-
 
 # multiple-sample
 #rule cnvkit_plot_heatmap:
