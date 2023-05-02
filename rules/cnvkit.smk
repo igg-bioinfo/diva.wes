@@ -176,30 +176,30 @@ rule cnvkit_export_seg:
         "> {log}"
 
 # single sample
-#rule cnvkit_plot_scatter:
-#    input:
-#        call="cnvkit/{sample}.cns",
-#        bin="cnvkit/{sample}.cnr"
-#    output:
-#        "cnvkit/{sample}.cnv.scatter.png"
-#    params:
-#        sample_name="{sample}",
-#        segment_color="red",
-#        limits="--y-min -2 --y-max 2.5"
-#        # regions="-c chrN:start-end"
-#    log:
-#        "logs/cnvkit/{sample}.scatter.log"
-#    conda:
-#        "../envs/cnvkit.yaml"
-#    shell:
-#        "cnvkit.py scatter "
-#        "-s {input.call} "
-#        "-s {input.bin} "
-#        "--segment-color {params.segment_color} "
-#        "-i {params.sample_name} "
-#        "{params.limits} "
-#        "-o {output} "
-#        "> {log}"
+rule cnvkit_plot_scatter:
+    input:
+        call="cnvkit/{sample}.cns",
+        bin="cnvkit/{sample}.cnr"
+    output:
+        "cnvkit/{sample}.cnv.scatter.png"
+    params:
+        sample_name="{sample}",
+        segment_color="red",
+        limits="--y-min -5 --y-max 5"
+        # regions="-c chrN:start-end"
+    log:
+        "logs/cnvkit/{sample}.scatter.log"
+    conda:
+        "../envs/cnvkit.yaml"
+    shell:
+        "cnvkit.py scatter "
+        "-s {input.call} "
+        "-s {input.bin} "
+        "--segment-color {params.segment_color} "
+        "-i {params.sample_name} "
+        "{params.limits} "
+        "-o {output} "
+        "> {log}"
 
 # single sample
 #rule cnvkit_plot_diagram:

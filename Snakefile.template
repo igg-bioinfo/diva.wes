@@ -28,6 +28,8 @@ rule all:
         expand("cnvkit/{sample.sample}.cnv.vcf.gz", sample=samples.reset_index().itertuples()),
          # CNV kit IGV
         expand("cnvkit/{sample.sample}.seg", sample=samples.reset_index().itertuples()),
+         # CNV scatter plot
+        expand("cnvkit/{sample.sample}.cnv.scatter.png", sample=samples.reset_index().itertuples()),
          # Interactive HTML QC report
 #        "qc/multiqc.html",
          # Check relationships between each pair of samples
