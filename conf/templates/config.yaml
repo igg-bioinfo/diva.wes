@@ -6,7 +6,7 @@ reheader: ../conf/reheader.tsv
 internal_sid: "LIMS"
 
 references:
-    basepath: "/mnt/references"
+    basepath: "/nas/references"
     provider: "gatk"
     release: "hg38"
 
