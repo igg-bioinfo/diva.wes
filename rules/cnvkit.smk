@@ -46,8 +46,8 @@ rule cnvkit_antitarget:
 
 rule cnvkit_fix:
     input:
-        target = "cnvkit/{sample}.targetcoverage.cnn",
-        antitarget = "cnvkit/{sample}.antitargetcoverage.cnn"
+        target = rules.cnvkit_target.output,
+        antitarget = rules.cnvkit_antitarget.output
     output:
         "cnvkit/{sample}.cnr"
     params:
@@ -70,7 +70,7 @@ rule cnvkit_fix:
 # single sample
 rule cnvkit_segment:
     input:
-        "cnvkit/{sample}.cnr"
+        rules.cnvkit_fix.output
     output:
         "cnvkit/{sample}.cns"
     params:
@@ -92,8 +92,8 @@ rule cnvkit_segment:
 # single sample
 rule cnvkit_segmetrics:
     input:
-        bins="cnvkit/{sample}.cnr",
-        segments="cnvkit/{sample}.cns"
+        bins=rules.cnvkit_fix.output,
+        segments=rules.cnvkit_segment.output
     output:
         "cnvkit/{sample}.segmetrics.output"
     params:
@@ -116,7 +116,7 @@ rule cnvkit_segmetrics:
 # single sample
 rule cnvkit_call:
     input:
-        "cnvkit/{sample}.segmetrics.output"
+        rules.cnvkit_segmetrics.output
     output:
         "cnvkit/{sample}.call"
     params:
@@ -142,7 +142,7 @@ rule cnvkit_call:
 # single sample
 rule cnvkit_export:
     input:
-        "cnvkit/{sample}.call"
+        rules.cnvkit_call.output
     output:
         gz="cnvkit/{sample}.cnv.vcf.gz",
         tbi="cnvkit/{sample}.cnv.vcf.gz.tbi"
@@ -159,7 +159,7 @@ rule cnvkit_export:
 # single sample
 rule cnvkit_export_seg:
     input:
-        "cnvkit/{sample}.cns"
+        rules.cnvkit_segment.output
     output:
         "cnvkit/{sample}.seg"
     log:
@@ -178,8 +178,8 @@ rule cnvkit_export_seg:
 # single sample
 rule cnvkit_plot_scatter:
     input:
-        call="cnvkit/{sample}.cns",
-        bin="cnvkit/{sample}.cnr"
+        segment=rules.cnvkit_segment.output,
+        bin=rules.cnvkit_fix.output
     output:
         "cnvkit/{sample}.cnv.scatter.png"
     params:
@@ -193,7 +193,7 @@ rule cnvkit_plot_scatter:
         "../envs/cnvkit.yaml"
     shell:
         "cnvkit.py scatter "
-        "-s {input.call} "
+        "-s {input.segment} "
         "-s {input.bin} "
         "--segment-color {params.segment_color} "
         "-i {params.sample_name} "
@@ -204,7 +204,7 @@ rule cnvkit_plot_scatter:
 # single sample
 #rule cnvkit_plot_diagram:
 #    input:
-#        "cnvkit/{sample}.call.cns"
+#        rules.cnvkit_segment.output
 #    output:
 #        "cnvkit/{sample}.cnv.diagram.pdf"
 #    params:
@@ -225,7 +225,7 @@ rule cnvkit_plot_scatter:
 # multiple-sample
 #rule cnvkit_plot_heatmap:
 #    input:
-#        expand("cnvkit/{sample.sample}.call.cns",sample=samples.reset_index().itertuples())
+#        expand(rules.cnvkit_segment.output,sample=samples.reset_index().itertuples())
 #    output:
 #        "cnvkit/{sample}.cnv.heatmap.png"
 #    params:

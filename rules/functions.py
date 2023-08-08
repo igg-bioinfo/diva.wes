@@ -136,15 +136,18 @@ def get_units_by_sample(wildcards, samples, label='units', prefix='before',
 def get_odp(wildcards,samples,optical_dup='odp'):
     return "OPTICAL_DUPLICATE_PIXEL_DISTANCE={}".format(samples.loc[wildcards.sample, [optical_dup]].dropna()[0])
 
+def get_kit_col_value(kit_name, col):
+    value = []
+    if len(kits.loc[kit_name, [col]].dropna()) > 0:
+        value = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, [col]].dropna()[0])
+    return value
 
 def get_kit(wildcards,samples,enrichment_kit='kit', specific_kit=None):
-    if specific_kit:
-        kit_name=specific_kit
-    else:   kit_name=samples.loc[wildcards.sample, [enrichment_kit]].dropna()[0]
-    hsprobes = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["hsProbes"]].dropna()[0])
-    hstarget = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["hsTarget"]].dropna()[0])
-    cnvTarget = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["cnvTarget"]].dropna()[0])
-    cnvAntitarget = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["cnvAntitarget"]].dropna()[0])
-    cnvRef = resolve_single_filepath(*references_abs_path(), kits.loc[kit_name, ["cnvRef"]].dropna()[0])
+    kit_name= specific_kit if specific_kit else samples.loc[wildcards.sample, [enrichment_kit]].dropna()[0]
+    hsprobes = get_kit_col_value(kit_name, "hsProbes")
+    hstarget = get_kit_col_value(kit_name, "hsTarget")
+    cnvTarget = get_kit_col_value(kit_name, "cnvTarget")
+    cnvAntitarget = get_kit_col_value(kit_name, "cnvAntitarget")
+    cnvRef =get_kit_col_value(kit_name, "cnvRef")
     return hsprobes,hstarget,cnvTarget,cnvAntitarget,cnvRef
 
