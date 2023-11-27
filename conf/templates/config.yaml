@@ -33,7 +33,7 @@ rules:
         platform: "illumina"
         threads: 6
     multiqc:
-        arguments: "--force --cl_config 'picard_config: { general_stats_target_coverage: [10,20,30] }' --interactive --cl_config 'max_table_rows: 700'"
+        arguments: "--force --cl-config 'picard_config: { general_stats_target_coverage: [10,20,30] }' --interactive --cl-config 'max_table_rows: 700'"
         threads: 12
     multiqc_heatmap:
         threads: 4
