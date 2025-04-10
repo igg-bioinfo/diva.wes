@@ -40,7 +40,7 @@ rule fastp_pe:
         json="reads/trimmed/{unit}.fastp.json",
         html="reads/trimmed/{unit}.fastp.html"
     log:
-        "logs/trimmed/{unit}.log"
+        "logs/fastp_pe/{unit}.log"
     benchmark:
         "benchmarks/fastp_pe/{unit}.txt"
     conda:
@@ -66,7 +66,7 @@ rule fastp_se:
        json="reads/trimmed/{unit}.fastp.json",
        html="reads/trimmed/{unit}.fastp.html"
     log:
-        "logs/trimmed/{unit}.log"
+        "logs/fastp_se/{unit}.log"
     benchmark:
         "benchmarks/fastp_se/{unit}.txt"
     conda:
