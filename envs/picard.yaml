@@ -1,5 +1,6 @@
 channels:
+  - conda-forge
   - bioconda
 dependencies:
-  - picard=2.23.6
-  - r-base=4.0.3
+  - picard
+  - r-base

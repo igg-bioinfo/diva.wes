@@ -29,20 +29,18 @@ tmp_dir: "/mnt/tmp"
 
 rules:
     bwa_mem:
-        arguments: "-M"
+        arguments: "mem"
         platform: "illumina"
-        threads: 6
+        threads: 8
     multiqc:
         arguments: "--force --cl-config 'picard_config: { general_stats_target_coverage: [10,20,30] }' --interactive --cl-config 'max_table_rows: 700'"
         threads: 12
     multiqc_heatmap:
         threads: 4
-    trim_galore_pe:
-        arguments: "-q 20 --fastqc --fastqc_args '--outdir qc/fastqc --quiet' --paired"
-        threads: 8
-    trim_galore_se:
-        arguments: "-q 20 --fastqc --fastqc_args '--outdir qc/fastqc --quiet'"
-        threads: 8
+    fastp_pe:
+        threads: 16
+    fastp_se:
+        threads: 16
     picard_MarkDuplicates:
         arguments: "REMOVE_DUPLICATES=false ASSUME_SORTED=true CREATE_INDEX=true"
         threads: 6

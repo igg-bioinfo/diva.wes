@@ -1,4 +1,0 @@
-channels:
-  - anaconda
-dependencies:
-  - trim-galore=0.6.6

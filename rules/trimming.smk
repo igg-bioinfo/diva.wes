@@ -30,76 +30,72 @@ rule pre_rename_fastq_se:
         "ln -s {input} {output.r1} "
 
 
-rule trim_galore_pe:
+rule fastp_pe:
     input:
-        rules.pre_rename_fastq_pe.output
+       r1="reads/untrimmed/{unit}-R1.fq.gz",
+       r2="reads/untrimmed/{unit}-R2.fq.gz"
     output:
-        temp("reads/trimmed/{unit}-R1_val_1.fq.gz"),
-        "reads/trimmed/{unit}-R1.fq.gz_trimming_report.txt",
-        temp("reads/trimmed/{unit}-R2_val_2.fq.gz"),
-        "reads/trimmed/{unit}-R2.fq.gz_trimming_report.txt"
-    params:
-        extra=config.get("rules").get("trim_galore_pe").get("arguments"),
-        outdir="reads/trimmed/"
+        R1="reads/fastp_pe/{unit}-R1.fq.gz",
+        R2="reads/fastp_pe/{unit}-R2.fq.gz",
+        json="reads/fastp_pe/{unit}.fastp.json",
+        html="reads/fastp_pe/{unit}.fastp.html"
     log:
-        "logs/trim_galore/{unit}.log"
+        "logs/fastp_pe/{unit}.log"
     benchmark:
-        "benchmarks/trim_galore/{unit}.txt"
+        "benchmarks/fastp_pe/{unit}.txt"
     conda:
-        "../envs/trim_galore.yaml"
-    threads: (conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("trim_galore_pe").get("threads")))/4 if (conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("trim_galore_pe").get("threads"))) > 4 else 1
+        "../envs/fastp.yaml"
+    threads: config.get("rules").get("fastp_pe").get("threads")
     shell:
-        "mkdir -p qc/fastqc; "
-        "trim_galore "
-        "{params.extra} "
-        "--cores {threads} "
-        "-o {params.outdir} "
-        "{input} "
+        "fastp "
+        "--in1 {input.r1} "
+        "--in2 {input.r2} "
+        "--thread {threads} "
+        "--detect_adapter_for_pe "
+        "--json {output.json} "
+        "--html {output.html} "
+        "--out1 {output.R1} "
+        "--out2 {output.R2} "
         ">& {log}"
 
-
-rule trim_galore_se:
+rule fastp_se:
     input:
-        rules.pre_rename_fastq_se.output
+       r1="reads/untrimmed/{unit}-R1.fq.gz"
     output:
-        temp("reads/trimmed/se/{unit}-R1_trimmed.fq.gz"),
-        "reads/trimmed/se/{unit}-R1.fq.gz_trimming_report.txt"
-    params:
-        extra=config.get("rules").get("trim_galore_se").get("arguments"),
-        outdir="reads/trimmed/se/"
+       R1="reads/fastp_se/{unit}-R1.fq.gz",
+       json="reads/fastp_se/{unit}.fastp.json",
+       html="reads/fastp_se/{unit}.fastp.html"
     log:
-        "logs/trim_galore/{unit}.log"
+        "logs/fastp_se/{unit}.log"
     benchmark:
-        "benchmarks/trim_galore/{unit}.txt"
+        "benchmarks/fastp_se/{unit}.txt"
     conda:
-        "../envs/trim_galore.yaml"
-    threads: (conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("trim_galore_se").get("threads")))/2 if (conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("trim_galore_se").get("threads"))) > 2 else 1
+        "../envs/fastp.yaml"
+    threads: config.get("rules").get("fastp_se").get("threads")
     shell:
-        "mkdir -p qc/fastqc; "
-        "trim_galore "
-        "{params.extra} "
-        "--cores {threads} "
-        "-o {params.outdir} "
-        "{input} "
+        "fastp "
+        "--in1 {input.r1} "
+        "--thread {threads} "
+        "--json {output.json} "
+        "--html {output.html} "
+        "--out1 {output.R1} "
         ">& {log}"
-
-
-
 
 rule post_rename_fastq_pe:
     input:
-        rules.trim_galore_pe.output
+        R1="reads/fastp_pe/{unit}-R1.fq.gz",
+        R2="reads/fastp_pe/{unit}-R2.fq.gz"
     output:
         r1=temp("reads/trimmed/{unit}-R1-trimmed.fq.gz"),
         r2=temp("reads/trimmed/{unit}-R2-trimmed.fq.gz")
     shell:
-        "mv {input[0]} {output.r1} &&"
-        "mv {input[2]} {output.r2} "
+        "mv {input.R1} {output.r1} &&"
+        "mv {input.R2} {output.r2} "
 
 
 rule post_rename_fastq_se:
     input:
-        rules.trim_galore_se.output
+        rules.fastp_se.output
     output:
         r1=temp("reads/se/trimmed/{unit}-R1-trimmed.fq.gz")
     shell:

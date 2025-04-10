@@ -15,7 +15,7 @@ rule multiqc:
         params=config.get("rules").get("multiqc").get("arguments"),
         outdir="qc",
         outname="multiqc.html",
-        fastqc="qc/fastqc/",
+        #fastqc="qc/fastqc/",
         trimming="reads/trimmed/",
         reheader=config.get("reheader")
     conda:
@@ -26,7 +26,7 @@ rule multiqc:
     shell:
         "multiqc "
         "{input} "
-        "{params.fastqc} "
+        #"{params.fastqc} "
         "{params.trimming} "
         "{params.params} "
         "-o {params.outdir} "
