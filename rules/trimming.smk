@@ -32,11 +32,11 @@ rule pre_rename_fastq_se:
 
 rule fastp_pe:
     input:
-       r1=temp("reads/untrimmed/{unit}-R1.fq.gz"),
-       r2=temp("reads/untrimmed/{unit}-R2.fq.gz")
+       r1=temp("pre_rename_fastq_pe.output.r1"),
+       r2=temp("pre_rename_fastq_pe.output.r2")
     output:
         r1=temp("reads/trimmed/{unit}-R1-trimmed.fq.gz"),
-        r2=temp("reads/trimmed/{unit}-R2-trimmed.fq.gz")
+        r2=temp("reads/trimmed/{unit}-R2-trimmed.fq.gz"),
         json="reads/trimmed/{unit}.fastp.json",
         html="reads/trimmed/{unit}.fastp.html"
     log:
@@ -60,7 +60,7 @@ rule fastp_pe:
 
 rule fastp_se:
     input:
-       r1=temp("reads/untrimmed/{unit}-R1.fq.gz")
+       r1=temp("pre_rename_fastq_se.output.r1")
     output:
        r1=temp("reads/trimmed/{unit}-R1-trimmed.fq.gz"),
        json="reads/trimmed/{unit}.fastp.json",
