@@ -31,7 +31,7 @@ rules:
     bwa_mem:
         arguments: "mem"
         platform: "illumina"
-        threads: 8
+        threads: 6
     multiqc:
         arguments: "--force --cl-config 'picard_config: { general_stats_target_coverage: [10,20,30] }' --interactive --cl-config 'max_table_rows: 700'"
         threads: 12
