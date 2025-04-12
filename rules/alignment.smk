@@ -3,7 +3,7 @@ rule bwa_mem:
     input:
         lambda wildcards: get_trimmed_reads(wildcards,units)
     output:
-        "reads/aligned/{unit}_fixmate.cram"
+        temp("reads/aligned/{unit}_fixmate.cram")
     conda:
         "../envs/bwa_mem.yaml"
     params:

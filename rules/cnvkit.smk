@@ -72,7 +72,7 @@ rule cnvkit_segment:
     input:
         rules.cnvkit_fix.output
     output:
-        "cnvkit/{sample}.cns"
+        temp("cnvkit/{sample}.cns")
     params:
         segmentation_algorithm="hmm-germline" # default "cbs"
     log:
@@ -95,7 +95,7 @@ rule cnvkit_segmetrics:
         bins=rules.cnvkit_fix.output,
         segments=rules.cnvkit_segment.output
     output:
-        "cnvkit/{sample}.segmetrics.output"
+        temp("cnvkit/{sample}.segmetrics.output")
     params:
         metrics="--ci --pi"
     log:
@@ -118,7 +118,7 @@ rule cnvkit_call:
     input:
         rules.cnvkit_segmetrics.output
     output:
-        "cnvkit/{sample}.call"
+        temp("cnvkit/{sample}.call")
     params:
         filter="--filter ci",
         method="threshold",
