@@ -15,8 +15,8 @@ rule pre_rename_fastq_pe:
     input:
         lambda wildcards: get_fastq(wildcards,units)
     output:
-        r1=temp("reads/untrimmed/{unit}-R1.fq.gz"),
-        r2=temp("reads/untrimmed/{unit}-R2.fq.gz")
+        r1="reads/untrimmed/{unit}-R1.fq.gz",
+        r2="reads/untrimmed/{unit}-R2.fq.gz"
     shell:
         "ln -s {input[0]} {output.r1} &&"
         "ln -s {input[1]} {output.r2} "
@@ -32,13 +32,13 @@ rule pre_rename_fastq_se:
 
 rule fastp_pe:
     input:
-       r1=temp("pre_rename_fastq_pe.output.r1"),
-       r2=temp("pre_rename_fastq_pe.output.r2")
+        r1="reads/untrimmed/{unit}-R1.fq.gz",
+        r2="reads/untrimmed/{unit}-R2.fq.gz"
     output:
-        r1=temp("reads/trimmed/{unit}-R1-trimmed.fq.gz"),
-        r2=temp("reads/trimmed/{unit}-R2-trimmed.fq.gz"),
-        json="reads/trimmed/{unit}.fastp.json",
-        html="reads/trimmed/{unit}.fastp.html"
+       r1=temp("reads/trimmed/{unit}-R1-trimmed.fq.gz"),
+       r2=temp("reads/trimmed/{unit}-R2-trimmed.fq.gz"),
+       json="reads/trimmed/{unit}.fastp.json",
+       html="reads/trimmed/{unit}.fastp.html"
     log:
         "logs/fastp_pe/{unit}.log"
     benchmark:
@@ -60,11 +60,11 @@ rule fastp_pe:
 
 rule fastp_se:
     input:
-       r1=temp("pre_rename_fastq_se.output.r1")
+       rules.pre_rename_fastq_se.output
     output:
-       r1=temp("reads/trimmed/{unit}-R1-trimmed.fq.gz"),
-       json="reads/trimmed/{unit}.fastp.json",
-       html="reads/trimmed/{unit}.fastp.html"
+       temp("reads/trimmed/se/{unit}-R1-trimmed.fq.gz"),
+       json="reads/trimmed/se/{unit}.fastp.json",
+       html="reads/trimmed/se/{unit}.fastp.html"
     log:
         "logs/fastp_se/{unit}.log"
     benchmark:
@@ -74,11 +74,11 @@ rule fastp_se:
     threads: config.get("rules").get("fastp_se").get("threads")
     shell:
         "fastp "
-        "--in1 {input.r1} "
+        "--in1 {input} "
         "--thread {threads} "
         "--json {output.json} "
         "--html {output.html} "
-        "--out1 {output.r1} "
+        "--out1 {output} "
         ">& {log}"
 
 def get_trimmed_reads(wildcards,units):
