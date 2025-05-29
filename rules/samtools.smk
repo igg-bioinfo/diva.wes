@@ -74,7 +74,7 @@ rule samtools_bam_to_cram:
     input:
         "reads/recalibrated/{sample}.dedup.recal.bam"
     output:
-        protected("reads/recalibrated/{sample}.dedup.recal.cram")
+        temp("reads/recalibrated/{sample}.dedup.recal.cram")
     conda:
         "../envs/samtools.yaml"
     benchmark:
