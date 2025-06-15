@@ -8,7 +8,7 @@ rule samtools_sort:
    params:
        tmp_dir=tmp_path(path=config.get("tmp_dir")),
        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
-       output_fmt="CRAM"
+       output_fmt="CRAM,version=3.0"
    benchmark:
        "benchmarks/samtools/sort/{unit}.txt"
    threads: conservative_cpu_count(reserve_cores=2, max_cores=config.get("rules").get("samtools_sort").get("threads"))
