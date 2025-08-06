@@ -15,11 +15,13 @@ rule pre_rename_fastq_pe:
     input:
         lambda wildcards: get_fastq(wildcards,units)
     output:
-        r1="reads/untrimmed/{unit}-R1.fq.gz",
-        r2="reads/untrimmed/{unit}-R2.fq.gz"
+        r1=temp("reads/untrimmed/{unit}-R1.fq.gz"),
+        r2=temp("reads/untrimmed/{unit}-R2.fq.gz")
     shell:
-        "ln -s {input[0]} {output.r1} &&"
-        "ln -s {input[1]} {output.r2} "
+        "cp {input[0]} {output.r1} && "
+        "cp {input[1]} {output.r2} "
+        #"ln -s {input[0]} {output.r1} &&"
+        #"ln -s {input[1]} {output.r2} "
 
 rule pre_rename_fastq_se:
     input:

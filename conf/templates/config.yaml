@@ -29,8 +29,9 @@ tmp_dir: "/mnt/tmp"
 
 rules:
     bwa_mem:
-        arguments: "mem"
+        arguments: "mem -M"
         platform: "illumina"
+        genome: "/projects/datasets_references/gatk/Hg38/bwa-mem2/Homo_sapiens_assembly38.fasta"
         threads: 6
     multiqc:
         arguments: "--force --cl-config 'picard_config: { general_stats_target_coverage: [10,20,30] }' --interactive --cl-config 'max_table_rows: 700'"
@@ -57,6 +58,8 @@ rules:
         threads: 8
     picard_mendelian_violations:
         threads: 6
+    gatk_DepthOfCoverage:
+        threads: 4
     gatk_BQSR_data_processing:
         known_sites:
             - dbsnp

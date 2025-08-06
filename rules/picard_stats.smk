@@ -75,7 +75,7 @@ rule gatk_DepthOfCoverage:
         "benchmarks/gatk/DepthOfCoverage/{sample}.txt"
     log:
         "logs/gatk/DepthOfCoverage/{sample}.txt"
-    threads: 4
+    threads: config.get("rules").get("gatk_DepthOfCoverage").get("threads")
     shell:
         "gatk DepthOfCoverage "
         "--omit-depth-output-at-each-base --omit-locus-table "

@@ -11,7 +11,7 @@ rule bwa_mem:
         custom=config.get("rules").get("bwa_mem").get("arguments"),
         platform=config.get("rules").get("bwa_mem").get("platform"),
         platform_unit=lambda wildcards: '.'.join(wildcards.unit.split('.')[:-1]),
-        genome=resolve_single_filepath(*references_abs_path(), config.get("genome_fasta")),
+        genome=config.get("rules").get("bwa_mem").get("genome"),
         output_fmt="CRAM"
     log:
         "logs/bwa_mem/{unit}.log"
