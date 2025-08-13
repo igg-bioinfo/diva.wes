@@ -1,7 +1,5 @@
 channels:
 - conda-forge
 - bioconda
-- anaconda
-- defaults
 dependencies:
  - multiqc=1.28-0
